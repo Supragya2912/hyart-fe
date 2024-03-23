@@ -5,9 +5,8 @@ import { motion } from "framer-motion";
 import Image from "../components/Layouts/Image";
 import Flex from "../components/Layouts/Flex";
 import Logo from "../assets/movix-logo.svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RiShoppingCart2Line } from "react-icons/ri";
-import { getItem } from "../utils/localStorageManager";
 import { getMyProfile } from "../redux/slices/appConfigSlice";
 
 const navBarList = [
@@ -44,10 +43,6 @@ const Header = () => {
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
   console.log("myProfile", myProfile);
 
-  const token = getItem("access_token");
-  console.log("token", token);
-
-
   useEffect(() => {
     const handleResize = () => {
       setShowMenu(window.innerWidth >= 667);
@@ -59,6 +54,7 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(getMyProfile());
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -147,14 +143,14 @@ const Header = () => {
                   )}
                 </div>
               </Link>
-              {/* {myProfile.isLoggedIn && user.role === "admin" ? (
+              {myProfile.role === "admin" ? (
                   <button
                     type="button"
                     className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     onClick={() => navigate('/admin/dashboard')}>
                     Dashboard
                   </button>
-                ) : myProfile.isLoggedIn && user.role === "user" ? (
+                ) : myProfile.role === "user" ? (
                   <div>
                     <img
                       src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
@@ -170,7 +166,7 @@ const Header = () => {
                   >
                     Login
                   </button>
-              )} */}
+              )}
           </div>
         </Flex>
       </nav>

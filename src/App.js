@@ -1,17 +1,12 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  createRoutesFromElements,
-  Route,
-  ScrollRestoration,
-} from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import LoadingBar from 'react-top-loading-bar';
 import toast, { Toaster } from 'react-hot-toast';
+import RequireUser from "./utils/RequireUser"
+import RequireLogin from "./utils/RequireLogin";
 
 import Header from "./pages/Header";
 import Search from "./pages/Search";
@@ -49,35 +44,11 @@ const Layout = () => {
       <Header />
       <Search />
       <SpecialCase />
-      <ScrollRestoration />
       <Outlet />
       <Footer />
     </div>
   );
 };
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />}></Route>
-        <Route path="/shop" element={<Shop />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
-        <Route path="/product/:_id" element={<ProductDetails />}></Route>
-        <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/paymentgateway" element={<Payment />}></Route>
-        <Route path="*" element={<Error />} />
-      </Route>
-      <Route path="/otp" element={<Otp/>}></Route>
-      <Route path="/signup" element={<Signup />}></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/forgot-password" element={<ForgotPassword />} ></Route>
-      <Route path="/reset-password" element={<UpdatePassword />} ></Route>
-      <Route path="*" element={<Error />} />
-    </Route>
-  )
-);
 
 export const TOAST_SUCCESS = "toast_success";
 export const TOAST_FAILURE = "toast_failure";
@@ -108,11 +79,32 @@ function App() {
   }, [toastData]);
 
   return (
-    <div className="font-bodyFont">
-       <LoadingBar color='#5f9fff' ref={loadingRef} />
-      <div><Toaster/></div>
-      <RouterProvider router={router} />
-    </div>
+    <div>
+    <LoadingBar color='#5f9fff' ref={loadingRef} />
+    <div><Toaster/></div>
+    <Routes>
+      <Route element={<RequireUser/>}>
+          <Route path="/" element={<Layout/>}>
+            <Route index element={<Home />}></Route>
+            <Route path="/shop" element={<Shop />}></Route>
+            <Route path="/about" element={<About />}></Route>
+            <Route path="/contact" element={<Contact />}></Route>
+            <Route path="/product/:_id" element={<ProductDetails />}></Route>
+            <Route path="/cart" element={<Cart />}></Route>
+            <Route path="/paymentgateway" element={<Payment />}></Route>
+            <Route path="*" element={<Error />} />
+          </Route>
+      </Route>
+      <Route element={<RequireLogin/>}>
+        <Route path="/otp" element={<Otp/>}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />} ></Route>
+        <Route path="/reset-password" element={<UpdatePassword />} ></Route>
+        <Route path="*" element={<Error />} />
+      </Route>
+    </Routes>
+  </div>
   );
 }
 
