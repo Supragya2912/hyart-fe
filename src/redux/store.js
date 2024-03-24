@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import appConfigReducer from "./slices/appConfigSlice";
-import cartReducer from "./slices/cartSlice";
+import appConfigReducer from "../redux/slices/appConfigSlice";
+import cartReducer from "../redux/slices/cartSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";

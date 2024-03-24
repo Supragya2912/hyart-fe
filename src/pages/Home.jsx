@@ -5,6 +5,7 @@ import BestSellers from "../components/home/BestSellers/BestSellers";
 import NewArrivals from "../components/home/NewArrivals/NewArrivals";
 import Section1 from "../components/home/Section1";
 import Section2 from "../components/home/Section2";
+import Section3 from "../components/home/Section3";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
         <Section1 />
         <BestSellers />
         <Section2 />
+        <Section3 />
       </div>
     </div>
   );

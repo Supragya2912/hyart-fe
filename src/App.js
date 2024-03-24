@@ -59,11 +59,10 @@ function App() {
   const toastData = useSelector((state) => state.appConfigReducer.toastData);
 
   useEffect(() => {
-    if(isLoading){
+    if(isLoading)
       loadingRef.current?.continuousStart();   
-    }else{
+    else
       loadingRef.current?.complete();
-    }
   }, [isLoading]);
 
   useEffect(() => {
@@ -96,12 +95,12 @@ function App() {
           </Route>
       </Route>
       <Route element={<RequireLogin/>}>
-        <Route path="/otp" element={<Otp/>}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/forgot-password" element={<ForgotPassword />} ></Route>
-        <Route path="/reset-password" element={<UpdatePassword />} ></Route>
-        <Route path="*" element={<Error />} />
+          <Route path="/otp" element={<Otp/>}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/forgot-password" element={<ForgotPassword />} ></Route>
+          <Route path="/reset-password" element={<UpdatePassword />} ></Route>
+          <Route path="*" element={<Error />} />
       </Route>
     </Routes>
   </div>

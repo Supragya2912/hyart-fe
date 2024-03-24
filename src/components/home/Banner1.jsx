@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import Jewellery1 from "../../assets/jewellery1.png";
-import Jewellery2 from "../../assets/jewellery2.png";
-import Jewellery3 from "../../assets/jewellery3.png";
+import Jewellery2 from "../../assets/jewellery1.png";
+import Jewellery3 from "../../assets/jewellery1.png";
 
 const CustomSlide = ({ Subtext, imgSrc, text, buttonText }) => (
   <div
