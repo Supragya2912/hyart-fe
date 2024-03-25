@@ -7,7 +7,8 @@ import Flex from "../components/Layouts/Flex";
 import Logo from "../assets/movix-logo.svg";
 import { useSelector } from "react-redux";
 import { RiShoppingCart2Line } from "react-icons/ri";
-import {axiosClient} from "../utils/axiosClient";
+import { useDispatch } from 'react-redux';
+import { getMyProfile } from '../redux/slices/appConfigSlice';
 
 const navBarList = [
   {
@@ -34,26 +35,25 @@ const navBarList = [
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(true);
   const [sidenav, setSidenav] = useState(false);
   const location = useLocation();
   const products = useSelector((state) => state.cartReducer.products);
-  const [myProfile, setMyProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  async function getProfile() {
-    try{
-      const response = await axiosClient.get('/api/auth/get-profile')
-      console.log(response);
-      setMyProfile(response.result);
-    }
-    catch(e){
-      console.log(e);
-    }
-  }
+  const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    dispatch(getMyProfile())
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, [dispatch]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -150,21 +150,24 @@ const Header = () => {
                   )}
                 </div>
               </Link>
-              {myProfile && myProfile.role === "admin" ? (
-                  <button
-                    type="button"
-                    className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                    onClick={() => navigate('/admin/dashboard')}>
-                    Dashboard
-                  </button>
-                ) : myProfile && myProfile.role === "user" ? (
-                  <div>
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
-                      className="w-10 rounded-full border-2 cursor-pointer"
-                      alt="Avatar" 
-                    />
-                  </div>
+              {!loading ? (
+                myProfile ? (
+                  myProfile?.role === "admin" ? (
+                    <button
+                      type="button"
+                      className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                      onClick={() => navigate('/admin/dashboard')}>
+                      Dashboard
+                    </button>
+                  ) : (
+                    <div>
+                      <img
+                        src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+                        className="w-10 rounded-full border-2 cursor-pointer"
+                        alt="Avatar" 
+                      />
+                    </div>
+                  )
                 ) : (
                   <button
                     type="button"
@@ -173,6 +176,9 @@ const Header = () => {
                   >
                     Login
                   </button>
+                )
+              ) : (
+                null
               )}
           </div>
         </Flex>

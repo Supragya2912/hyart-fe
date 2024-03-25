@@ -22,9 +22,9 @@ import Cart from "./components/Cart/Cart";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Payment from "./pages/Payment";
-import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import Error from "./pages/Error";
+import SingleProduct from "./pages/SingleProduct";
 
 const Layout = () => {
   return (
@@ -88,7 +88,7 @@ function App() {
             <Route path="/shop" element={<Shop />}></Route>
             <Route path="/about" element={<About />}></Route>
             <Route path="/contact" element={<Contact />}></Route>
-            <Route path="/product/:_id" element={<ProductDetails />}></Route>
+            <Route path="/product/:id" element={<SingleProduct />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
             <Route path="/paymentgateway" element={<Payment />}></Route>
             <Route path="*" element={<Error />} />

@@ -16,7 +16,7 @@ const appConfigSlice = createSlice({
     initialState: {
         isLoading: false,
         toastData: {},
-        myProfile: null,
+        myProfile: {},
     },
     reducers: {
         setLoading: (state, action) => {
@@ -29,7 +29,7 @@ const appConfigSlice = createSlice({
     extraReducers: (builder) => {
         builder
         .addCase(getMyProfile.fulfilled, (state, action) => {
-            state.myProfile = action.payload.user;
+            state.myProfile = action.payload;
         })
     }
 })

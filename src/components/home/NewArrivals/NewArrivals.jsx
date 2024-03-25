@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
-import Product from "../Products/Product";
+import Product from "../../ShopPage/Product";
 import NextArrow from "./NextArrow";
 import PrevArrow from "./PrevArrow";
 import Product1 from "../../../assets/jewellery1.png";
@@ -75,7 +75,6 @@ const NewArrivals = () => {
             img={Product3}
             productName="cloth Basket"
             price="80.00"
-            color="Mixed"
             badge={true}
             des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
           />

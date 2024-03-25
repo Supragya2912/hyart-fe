@@ -1,36 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { BsSuitHeartFill } from "react-icons/bs";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdOutlineLabelImportant } from "react-icons/md";
-import Image from "../../Layouts/Image";
+import Image from "../Layouts/Image";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../../redux/slices/cartSlice";
-import { toast } from "react-toastify";
+import { addToCart } from "../../redux/slices/cartSlice";
 
 const Product = (props) => {
   const dispatch = useDispatch();
-  const _id = props.productName;
-  const idString = (_id) => {
-    return String(_id).toLowerCase().split(" ").join("");
-  };
-  const rootId = idString(_id);
-  const [wishList, setWishList] = useState([]);
   const navigate = useNavigate();
-  const productItem = props;
+  const _id = props.id;
+  
   const handleProductDetails = () => {
-    navigate(`/product/${rootId}`, {
-      state: {
-        item: productItem,
-      },
-    });
+    navigate(`/product/${_id}`);
   };
 
-  const handleWishList = () => {
-    toast.success("Product add to wish List");
-    setWishList(wishList.push(props));
-    console.log(wishList);
-  };
   return (
     <div className="w-full relative group">
       <div className="max-w-80 h-72 relative overflow-y-hidden">
@@ -49,7 +34,6 @@ const Product = (props) => {
                     image: props.img,
                     badge: props.badge,
                     price: props.price,
-                    colors: props.color,
                   })
                 )
               }
@@ -70,7 +54,6 @@ const Product = (props) => {
               </span>
             </li>
             <li
-              onClick={handleWishList}
               className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full"
             >
               Add to Wish List

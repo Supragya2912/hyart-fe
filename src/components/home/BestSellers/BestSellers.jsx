@@ -1,5 +1,5 @@
 import React from "react";
-import Product from "../Products/Product";
+import Product from "../../ShopPage/Product";
 import Product1 from "../../../assets/jewellery1.png";
 import Product2 from "../../../assets/jewellery2.png";
 import Product3 from "../../../assets/jewellery3.png";
