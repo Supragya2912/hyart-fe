@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ProductBanner from "../components/ShopPage/ProductBanner";
 import { useSelector } from 'react-redux';
+import { axiosClient } from "../utils/axiosClient";
 
 const Shop = () => {
+  const [products, setProducts] = useState([]);
   const categories = useSelector((state) => state.productReducer.category);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+  async function getProductsCategory(categoryId) {
+    try {
+      const response = await axiosClient.post('/api/hyart/products', {
+        category_id: categoryId
+      });
+      setProducts(response?.result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    if (selectedCategoryId !== null) {
+      getProductsCategory(selectedCategoryId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategoryId]);
   
   return (
     <div className="grid grid-cols-4 gap-4">
@@ -15,6 +36,7 @@ const Shop = () => {
               type="radio"
               name="flexRadioDefault"
               id={`radioDefault${index}`}
+              onChange={() => setSelectedCategoryId(category._id)}
             />
             <label
               className="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
@@ -26,7 +48,7 @@ const Shop = () => {
         ))}
       </div>
       <div className="col-span-3">
-        <ProductBanner />
+        <ProductBanner products={products} />
       </div>
     </div>
   );

@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Product from './Product';
 
-const ProductBanner = () => {
-  const myProducts = useSelector((state) => state.productReducer.myProducts);
+const ProductBanner = (props) => {
+  const myProducts = useSelector((state) => props.products || state.productReducer.myProducts);
 
   return (
     <div className='grid grid-cols-3 gap-2 p-4'>
