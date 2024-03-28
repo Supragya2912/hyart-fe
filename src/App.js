@@ -91,7 +91,7 @@ function App() {
             <Route path="/contact" element={<Contact />}></Route>
             <Route path="/product/:id" element={<SingleProduct />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
-            <Route path="/paymentgateway" element={<Payment />}></Route>
+            <Route path="/payments/:status" element={<Payment />}></Route>
             <Route path="*" element={<Error />} />
           </Route>
           <Route path="/admin/dashboard" element={<Dashboard />} />

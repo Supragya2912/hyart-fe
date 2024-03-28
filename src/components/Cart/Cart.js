@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { resetCart } from "../../redux/slices/cartSlice";
 import ItemCard from "./ItemCard";
 import Logo from "../../assets/movix-logo.svg";
+import {axiosClient} from "../../utils/axiosClient";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -31,16 +32,59 @@ const Cart = () => {
     }
   }, [totalAmt]);
 
+  const initPayment = (data) => {
+    console.log("STEP 4 --", data);
+      const options = {
+        key: "rzp_test_CU4HeFOSwXLSD1",
+        amount: data.amount,
+        currency: data.currency,
+        name: products.name,
+        description: "Payment",
+        image: products.image,
+        order_id: data.id,
+        handler: async (response) => {
+          console.log("STEP 5 --", response);
+          try {
+            const verifyUrl = await axiosClient.post('/api/user/paymentVerification', {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              amount: data.amount,
+            });
+            console.log("STEP 6 --", verifyUrl);
+          } catch (error) {
+            console.log(error);
+          }
+        },
+        theme: {
+          color: "#3399cc",
+        },
+    };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  }
+
+  const handlePayment = async () => {
+    try{
+      const orderUrl = await axiosClient.post('/api/user/place-order', {
+        products: products?.map((item) => ({
+          product_id: item._id,
+          quantity: item.quantity,
+        }))
+      });
+
+      console.log("STEP 1 --", orderUrl);
+      initPayment(orderUrl.result);
+  
+    }catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="max-w-container mx-auto px-4">
       {products.length > 0 ? (
         <div className="pb-20">
-          <div className="w-full h-20 bg-[#F5F7F7] text-primeColor hidden lgl:grid grid-cols-5 place-content-center px-6 text-lg font-titleFont font-semibold">
-            <h2 className="col-span-2">Product</h2>
-            <h2>Price</h2>
-            <h2>Quantity</h2>
-            <h2>Sub Total</h2>
-          </div>
           <div className="mt-5">
             {products.map((item) => (
               <div key={item._id}>
@@ -96,14 +140,13 @@ const Cart = () => {
                 </p>
               </div>
               <div className="flex justify-end">
-                <Link to="/paymentgateway">
                   <button
                     type="button"
                     className="inline-block rounded-full bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
+                    onClick={handlePayment}
                   >
                     Proceed to Checkout
                   </button>
-                </Link>
               </div>
             </div>
           </div>
