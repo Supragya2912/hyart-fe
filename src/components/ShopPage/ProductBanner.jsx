@@ -4,6 +4,7 @@ import Product from './Product';
 
 const ProductBanner = (props) => {
   const myProducts = useSelector((state) => props.products || state.productReducer.myProducts);
+  console.log("yoyo", myProducts)
 
   return (
     <div className='grid grid-cols-3 gap-2 p-4'>

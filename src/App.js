@@ -25,6 +25,7 @@ import Payment from "./pages/Payment";
 import Shop from "./pages/Shop";
 import Error from "./pages/Error";
 import SingleProduct from "./pages/SingleProduct";
+import Dashboard from "./dashboard/Dashboard";
 
 const Layout = () => {
   return (
@@ -93,6 +94,7 @@ function App() {
             <Route path="/paymentgateway" element={<Payment />}></Route>
             <Route path="*" element={<Error />} />
           </Route>
+          <Route path="/admin/dashboard" element={<Dashboard />} />
       </Route>
       <Route element={<RequireLogin/>}>
           <Route path="/otp" element={<Otp/>}></Route>
