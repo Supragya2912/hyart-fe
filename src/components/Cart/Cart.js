@@ -7,6 +7,8 @@ import ItemCard from "./ItemCard";
 import Logo from "../../assets/movix-logo.svg";
 import {axiosClient} from "../../utils/axiosClient";
 
+
+
 const Cart = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cartReducer.products);
@@ -39,17 +41,20 @@ const Cart = () => {
         amount: data.amount,
         currency: data.currency,
         name: products.name,
+        order_id: data.id,
         description: "Payment",
         image: products.image,
-        order_id: data.id,
+        receipt: data.receipt,
         handler: async (response) => {
           console.log("STEP 5 --", response);
           try {
             const verifyUrl = await axiosClient.post('/api/user/paymentVerification', {
+              orderCreationId: data.id,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               amount: data.amount,
+              receipt: data.receipt
             });
             console.log("STEP 6 --", verifyUrl);
           } catch (error) {
@@ -60,6 +65,8 @@ const Cart = () => {
           color: "#3399cc",
         },
     };
+
+    console.log("====================================", options);
     const rzp1 = new window.Razorpay(options);
     rzp1.open();
   }

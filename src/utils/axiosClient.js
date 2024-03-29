@@ -8,7 +8,8 @@ let baseURL = process.env.REACT_APP_SERVER_BASE_URL;
 
 export const axiosClient = axios.create({
     baseURL,
-    withCredentials: true
+    withCredentials: true,
+    mode:"cors",
 });
 
 axiosClient.interceptors.request.use((request) => {
