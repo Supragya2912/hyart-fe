@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { resetCart } from "../../redux/slices/cartSlice";
 import ItemCard from "./ItemCard";
 import Logo from "../../assets/movix-logo.svg";
 import {axiosClient} from "../../utils/axiosClient";
 
-
-
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cartReducer.products);
   const [totalAmt, setTotalAmt] = useState("");
@@ -57,6 +56,8 @@ const Cart = () => {
               receipt: data.receipt
             });
             console.log("STEP 6 --", verifyUrl);
+            if (verifyUrl.status === 'ok') navigate('/payments/success');
+            else navigate('/payments/failed');
           } catch (error) {
             console.log(error);
           }
