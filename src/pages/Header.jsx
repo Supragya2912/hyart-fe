@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { RiShoppingCart2Line } from "react-icons/ri";
 import { useDispatch } from 'react-redux';
 import { getMyProfile } from '../redux/slices/appConfigSlice';
+import { axiosClient } from "../utils/axiosClient";
+import { KEY_ACCESS_TOKEN, removeItem } from "../utils/localStorageManager";
 
 const navBarList = [
   {
@@ -38,6 +40,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(true);
   const [sidenav, setSidenav] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const products = useSelector((state) => state.cartReducer.products);
   const [loading, setLoading] = useState(true);
@@ -63,6 +66,20 @@ const Header = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  async function handleLogoutClicked() {
+    try {
+        await axiosClient.post('/api/auth/logout');
+        removeItem(KEY_ACCESS_TOKEN);
+        navigate('/login')
+      }catch (e){
+        console.log(e);
+      }
+  }
 
   return (
     <div className="w-full h-20 bg-white sticky top-0 z-50 border-b-[1px] border-b-gray-200">
@@ -137,19 +154,7 @@ const Header = () => {
             )}
           </div>
 
-          <div className="flex gap-6 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
-              <Link to="/cart">
-                <div className="bg-white w-16 h-[70px] rounded-md flex flex-col gap-1 text-[#33475b] justify-center items-center overflow-x-hidden group cursor-pointer relative">
-                  <div className="flex justify-center items-center">
-                  <RiShoppingCart2Line className="text-2xl" />
-                  </div>
-                  {products.length > 0 && (
-                    <p className="absolute top-4 right-3 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                      {products.length}
-                    </p>
-                  )}
-                </div>
-              </Link>
+          <div className="flex gap-10 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
               {!loading ? (
                 myProfile ? (
                   myProfile?.role === "admin" ? (
@@ -161,11 +166,51 @@ const Header = () => {
                     </button>
                   ) : (
                     <div>
-                      <img
-                        src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
-                        className="w-10 rounded-full border-2 cursor-pointer"
-                        alt="Avatar" 
-                      />
+                      <button
+                          type="button"
+                          className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-100"
+                          id="user-menu-button"
+                          aria-expanded={isOpen}
+                          onClick={toggleDropdown}
+                      >
+                          <img
+                              className="w-8 h-8 rounded-full"
+                              src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+                              alt="user photo"
+                          />
+                      </button>
+                      <div className={`${isOpen ? 'block' : 'hidden'}`}>
+                        <div className="absolute z-50 my-4 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
+                            <div className="py-3 px-4">
+                                <span className="block text-sm font-semibold text-gray-900 dark:text-white">Neil sims</span>
+                                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+                            </div>
+                            <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                                <li>
+                                    <Link to="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My Orders</Link>
+                                </li>
+                                <li>
+                                    <Link to="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</Link>
+                                </li>
+                            </ul>
+                            <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                                <li>
+                                    <Link to="#" className="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <svg className="mr-2 w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/></svg>
+                                        My Wishlist
+                                    </Link>
+                                </li>
+                            </ul>
+                            <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                                <li 
+                                  className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                  onClick={handleLogoutClicked}
+                                >
+                                  Sign Out
+                                </li>
+                            </ul>
+                        </div>
+                      </div>
                     </div>
                   )
                 ) : (
@@ -180,6 +225,18 @@ const Header = () => {
               ) : (
                 null
               )}
+              <Link to="/cart">
+                <div className="bg-white w-16 h-[70px] rounded-md flex flex-col gap-1 text-[#33475b] justify-center items-center overflow-x-hidden group cursor-pointer relative">
+                  <div className="flex justify-center items-center">
+                  <RiShoppingCart2Line className="text-2xl" />
+                  </div>
+                  {products.length > 0 && (
+                    <p className="absolute top-4 right-3 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                      {products.length}
+                    </p>
+                  )}
+                </div>
+              </Link>
           </div>
         </Flex>
       </nav>
