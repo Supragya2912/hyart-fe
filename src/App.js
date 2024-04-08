@@ -26,6 +26,10 @@ import Shop from "./pages/Shop";
 import Error from "./pages/Error";
 import SingleProduct from "./pages/SingleProduct";
 import Dashboard from "./dashboard/Dashboard";
+import Products from "./dashboard/components/Products";
+import Customers from "./dashboard/components/Customers";
+import Categories from "./dashboard/components/Categories";
+import Orders from "./dashboard/components/Orders";
 
 const Layout = () => {
   return (
@@ -79,7 +83,7 @@ function App() {
   }, [toastData]);
 
   return (
-    <div>
+  <div>
     <LoadingBar color='#5f9fff' ref={loadingRef} />
     <div><Toaster/></div>
     <Routes>
@@ -94,7 +98,12 @@ function App() {
             <Route path="/payments/:status" element={<Payment />}></Route>
             <Route path="*" element={<Error />} />
           </Route>
-          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} >
+              <Route path="products" element={<Products />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="categories" element={<Categories />} />
+              <Route path="orders" element={<Orders />} />
+          </Route>
       </Route>
       <Route element={<RequireLogin/>}>
           <Route path="/otp" element={<Otp/>}></Route>
