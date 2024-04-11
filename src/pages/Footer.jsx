@@ -40,7 +40,7 @@ const Footer = () => {
                         target="_blank"
                         rel="noreferrer"
                         href="https://www.instagram.com/soni_jewelleryshop"
-                        className="isomorphic-link isomorphic-link--external inline-flex items-center justify-center gap-1.5 bg-white text-sm font-medium text-gray-500 transition-all duration-150 rounded-xl border border-gray-200 px-3 py-2 hover:bg-blue-50 hover:text-[#20B2AA] hover:border-[#20B2AA]"
+                        className="isomorphic-link isomorphic-link--external inline-flex items-center justify-center gap-1.5 bg-white text-sm font-medium transition-all duration-150 rounded-xl border border-gray-200 px-3 py-2"
                     >
                     <FaInstagram />
                     <span className="text-sm font-medium">Follow us on Instagram</span>

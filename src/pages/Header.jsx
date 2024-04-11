@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
 import { motion } from "framer-motion";
-import Image from "../components/Layouts/Image";
 import Flex from "../components/Layouts/Flex";
 import Logo from "../assets/movix-logo.svg";
 import { useSelector } from "react-redux";
@@ -46,6 +45,7 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
+  console.log(myProfile);
 
   useEffect(() => {
     dispatch(getMyProfile())
@@ -87,7 +87,7 @@ const Header = () => {
         <Flex className="flex items-center justify-between h-full">
           <Link to="/">
             <div>
-              <Image className="w-32 object-cover" imgSrc={Logo} />
+              <img className="w-32 object-cover" src={Logo} />
             </div>
           </Link>
           <div>
@@ -182,8 +182,8 @@ const Header = () => {
                       <div className={`${isOpen ? 'block' : 'hidden'}`}>
                         <div className="absolute z-50 my-4 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
                             <div className="py-3 px-4">
-                                <span className="block text-sm font-semibold text-gray-900 dark:text-white">Neil sims</span>
-                                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+                                <span className="block text-sm font-semibold text-gray-900 dark:text-white">{myProfile?.name}</span>
+                                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{myProfile?.email}</span>
                             </div>
                             <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                                 <li>

@@ -3,11 +3,12 @@ import Slider from "react-slick";
 import Product from "../../ShopPage/Product";
 import NextArrow from "./NextArrow";
 import PrevArrow from "./PrevArrow";
-import Product1 from "../../../assets/jewellery1.png";
-import Product2 from "../../../assets/jewellery2.png";
-import Product3 from "../../../assets/jewellery3.png";
+import { useSelector } from 'react-redux';
 
 const NewArrivals = () => {
+  const myProducts = useSelector((state) =>state.productReducer.myProducts);
+  console.log("yoyo", myProducts)
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -47,60 +48,21 @@ const NewArrivals = () => {
     <div className="w-full pb-16">
       <div className="text-3xl font-semibold pb-6">New Arrivals</div>
       <Slider {...settings}>
-        <div className="px-2">
-          <Product
-            _id="100001"
-            img={Product1}
-            productName="Round Table Clock"
-            price="44.00"
-            color="Black"
-            badge={true}
-            des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-          />
-        </div>
-        <div className="px-2">
-          <Product
-            _id="100002"
-            img={Product2}
-            productName="Smart Watch"
-            price="250.00"
-            color="Black"
-            badge={true}
-            des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-          />
-        </div>
-        <div className="px-2">
-          <Product
-            _id="100003"
-            img={Product3}
-            productName="cloth Basket"
-            price="80.00"
-            badge={true}
-            des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-          />
-        </div>
-        <div className="px-2">
-          <Product
-            _id="100004"
-            img={Product1}
-            productName="Funny toys for babies"
-            price="60.00"
-            color="Mixed"
-            badge={false}
-            des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-          />
-        </div>
-        <div className="px-2">
-          <Product
-            _id="100005"
-            img={Product2}
-            productName="Funny toys for babies"
-            price="60.00"
-            color="Mixed"
-            badge={false}
-            des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-          />
-        </div>
+      {
+        myProducts?.allProducts?.map((product, index) => (
+          <div key={index} className='w-full'>
+            <div className="px-2">
+              <Product
+                id={product._id}
+                img={product.image.url}
+                productName={product.name}
+                price={product.price}
+                des={product.description}
+              />
+            </div>
+          </div>
+        ))
+      }
       </Slider>
     </div>
   );

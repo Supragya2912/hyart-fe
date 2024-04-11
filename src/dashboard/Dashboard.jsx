@@ -1,11 +1,13 @@
 import React from "react";
 import Logo from "../assets/movix-logo.svg"
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Products from "./components/Products";
 import Customers from "./components/Customers";
 import Categories from "./components/Categories";
 import Orders from "./components/Orders";
 import DashboardHome from "./components/DashboardHome";
+import { axiosClient } from "../utils/axiosClient";
+import { KEY_ACCESS_TOKEN, removeItem } from "../utils/localStorageManager";
 
 const navigationList = [
   {
@@ -154,6 +156,7 @@ const navigationList = [
 
 const Dashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const renderComponent = () => {
     switch (location.pathname) {
@@ -171,6 +174,16 @@ const Dashboard = () => {
         return null;
     }
   };
+
+  async function handleLogoutClicked() {
+    try {
+        await axiosClient.post('/api/auth/logout');
+        removeItem(KEY_ACCESS_TOKEN);
+        navigate('/login')
+      }catch (e){
+        console.log(e);
+      }
+  }
   
   return (
     <div className="bg-[#F6F8FA] w-full nourd-text">
@@ -223,7 +236,10 @@ const Dashboard = () => {
                     d="M6 9C6 8.58579 6.33579 8.25 6.75 8.25H15.75C16.1642 8.25 16.5 8.58579 16.5 9C16.5 9.41421 16.1642 9.75 15.75 9.75H6.75C6.33579 9.75 6 9.41421 6 9Z"
                   />
                   </svg>
-                  <span className="font-medium text-base text-[#637381] hover:text-[#4F80E1]">
+                  <span 
+                    className="font-medium text-base text-[#637381] hover:text-[#4F80E1]"
+                    onClick={handleLogoutClicked}
+                  >
                     Log out
                   </span>
                 </div>

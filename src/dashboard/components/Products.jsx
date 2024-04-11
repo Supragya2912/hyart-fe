@@ -5,10 +5,18 @@ const Products = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [isTrending, setIsTrending] = useState(false);
-  const [isBanner, setIsBanner] = useState(false);
   const [getProduct, setGetProduct] = useState([]);
+  const [getCategory, setGetCategory] = useState([]);
   const [deleteProductId, setDeleteProductId] = useState('');
+  const [readMore, setReadMore] = useState(false);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
+  const [isTrending, setIsTrending] = useState(false);
+  const [productId, setProductId] = useState('');
 
   const productCount = getProduct.length;
 
@@ -17,6 +25,16 @@ const Products = () => {
         const response = await axiosClient.post('/api/hyart/all-products');
         console.log(response.result.allProducts);
         setGetProduct(response.result.allProducts);
+    }catch(error){
+        console.log(error);
+    }
+  }
+
+  async function getAllCategories(){
+    try{
+        const response = await axiosClient.post('/api/hyart/all-category');
+        console.log(response.result);
+        setGetCategory(response.result);
     }catch(error){
         console.log(error);
     }
@@ -36,8 +54,49 @@ const Products = () => {
     }
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const addProduct = await axiosClient.post('/api/admin/create-product' , {name, price, category_id: category, quantity, description, image, trending: isTrending});
+        if(addProduct.status === "ok"){
+            setShowAddModal(!showAddModal);
+            getAllProduct();
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+  }
+
+  const edithandleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const editProduct = await axiosClient.post('/api/admin/update-product' , {product_id: productId, name, price, quantity, description, image, trending: isTrending});
+        if(editProduct.status === "ok"){
+            setShowEditModal(!showEditModal);
+            getAllProduct();
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+  }
+
+  function handleImageChange(e){
+    const file = e.target.files[0]; 
+    if(file.size > 5 * 1024 * 1024) return alert('Image size is too large (max: 5MB)');
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+        if(fileReader.readyState === fileReader.DONE){
+            setImage(fileReader.result);
+        }
+    }
+  }
+
   useEffect(() => {
     getAllProduct();
+    getAllCategories();
   },[]);
 
   const toggleDeleteModal = () => {
@@ -56,14 +115,9 @@ const Products = () => {
     setIsTrending(!isTrending);
   };
 
-  const handleBannerToggle = () => {
-    setIsBanner(!isBanner);
-  };
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-  };
+  const readmoreHandler = () => {
+    setReadMore(!readMore);
+  }
 
   return (
     <>
@@ -73,7 +127,7 @@ const Products = () => {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div className="flex-1 flex items-center space-x-2">
                     <h5>
-                        <span className="text-gray-500">All Products:</span>
+                        <span className="text-gray-500">Total Products:</span>
                         <span className="dark:text-white">{productCount}</span>
                     </h5>
                 </div>
@@ -110,7 +164,7 @@ const Products = () => {
                             <th scope="col" className="px-24">
                                 Product
                             </th>
-                            <th scope="col" className="p-4">
+                            <th scope="col" className="px-16">
                                 Category
                             </th>
                             <th scope="col" className="px-20">
@@ -150,7 +204,8 @@ const Products = () => {
                                 </td>
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <p>
-                                        {product?.description}
+                                        {readMore ? product?.description : `${product?.description.substring(0, 50)}...`}
+                                        <span className='text-sky-600 cursor-pointer' onClick={readmoreHandler}>{readMore ? `show-less` : 'read more'}</span>
                                     </p>
                                 </td>
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -166,7 +221,10 @@ const Products = () => {
                                         <button
                                             type="button"
                                             className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                            onClick={toggleEditModal}
+                                            onClick={() => {
+                                                setProductId(product?._id);
+                                                toggleEditModal();
+                                            }}
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -249,7 +307,7 @@ const Products = () => {
                 </button>
               </div>
               {/* Modal body */}
-                <form action=''>
+                <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label
@@ -265,6 +323,7 @@ const Products = () => {
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Product name"
                                 required
+                                onChange={(e) => setName(e.target.value)}
                             />
                         </div>
                         <div>
@@ -281,6 +340,7 @@ const Products = () => {
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Rs 0.00"
                                 required
+                                onChange={(e) => setPrice(e.target.value)}
                             />
                         </div>
                         <div>
@@ -293,12 +353,12 @@ const Products = () => {
                             <select
                                 id="category"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                onChange={(e) => setCategory(e.target.value)}
                             >
                                 <option selected="">Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
+                                {getCategory.map((category, index) => (
+                                    <option key={index} value={category?._id}>{category?.name}</option>
+                                ))}
                             </select>
                         </div>
                         <div>
@@ -315,6 +375,7 @@ const Products = () => {
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="0"
                                 required
+                                onChange={(e) => setQuantity(e.target.value)}
                             />
                         </div>
                         <div className="sm:col-span-2">
@@ -331,6 +392,7 @@ const Products = () => {
                                 placeholder="Write product description here"
                                 required
                                 defaultValue={""}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
                         <div>
@@ -345,7 +407,7 @@ const Products = () => {
                                     </p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or JPEG (MAX SIZE: 5MB)</p>
                                 </div>
-                                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileUpload} />
+                                <input id="dropzone-file" type="file" className="hidden" onChange={handleImageChange} />
                             </label>
                         </div>
                         <div className='flex items-center justify-center gap-10'>
@@ -365,22 +427,6 @@ const Products = () => {
                                     Trending
                                 </label>
                             </div>
-                            <div>
-                                <input
-                                    className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="bannerSwitch"
-                                    checked={isBanner}
-                                    onChange={handleBannerToggle}
-                                />
-                                <label
-                                    className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                                    htmlFor="bannerSwitch"
-                                >
-                                    Banner
-                                </label>
-                            </div>
                         </div>
                     </div>
                     <button
@@ -395,8 +441,8 @@ const Products = () => {
         </div>
     )}
 
-        {/* Eit Product Modal */}
-        {showEditModal && (
+    {/* Edit Product Modal */}
+    {showEditModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -426,7 +472,7 @@ const Products = () => {
                 </button>
               </div>
               {/* Modal body */}
-                <form action=''>
+                <form onSubmit={edithandleSubmit}>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label
@@ -441,7 +487,7 @@ const Products = () => {
                                 id="name"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Product name"
-                                required
+                                onChange={(e) => setName(e.target.value)}
                             />
                         </div>
                         <div>
@@ -457,26 +503,8 @@ const Products = () => {
                                 id="price"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Rs 0.00"
-                                required
+                                onChange={(e) => setPrice(e.target.value)}
                             />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="category"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Category
-                            </label>
-                            <select
-                                id="category"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            >
-                                <option selected="">Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
-                            </select>
                         </div>
                         <div>
                             <label
@@ -491,7 +519,7 @@ const Products = () => {
                                 id="quantity"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="0"
-                                required
+                                onChange={(e) => setQuantity(e.target.value)}
                             />
                         </div>
                         <div className="sm:col-span-2">
@@ -506,8 +534,8 @@ const Products = () => {
                                 rows={2}
                                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Write product description here"
-                                required
                                 defaultValue={""}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
                         <div>
@@ -522,7 +550,7 @@ const Products = () => {
                                     </p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or JPEG (MAX SIZE: 5MB)</p>
                                 </div>
-                                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileUpload} />
+                                <input id="dropzone-file" type="file" className="hidden" onChange={handleImageChange} />
                             </label>
                         </div>
                         <div className='flex items-center justify-center gap-10'>
@@ -542,27 +570,12 @@ const Products = () => {
                                     Trending
                                 </label>
                             </div>
-                            <div>
-                                <input
-                                    className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="bannerSwitch"
-                                    checked={isBanner}
-                                    onChange={handleBannerToggle}
-                                />
-                                <label
-                                    className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                                    htmlFor="bannerSwitch"
-                                >
-                                    Banner
-                                </label>
-                            </div>
                         </div>
                     </div>
                     <button
                         type="submit"
                         className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+
                     >
                         Update product
                     </button>

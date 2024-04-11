@@ -5,30 +5,57 @@ const Categories = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [isTrending, setIsTrending] = useState(false);
-  const [isBanner, setIsBanner] = useState(false);
-  const [getProduct, setGetProduct] = useState([]);
-  const [deleteProductId, setDeleteProductId] = useState('');
+  const [getCategory, setGetCategory] = useState([]);
+  const [categoryName, setCategoryName] = useState('');
+  const [deleteCategoryId, setDeleteCategoryId] = useState('');
+  const [editCategoryId, setEditCategoryId] = useState('');
 
-  const categoryCount = getProduct.length;
+  const categoryCount = getCategory.length;
 
-  async function getAllProduct(){
+  async function getAllCategories(){
     try{
-        const response = await axiosClient.post('/api/hyart/all-products');
-        console.log(response.result.allProducts);
-        setGetProduct(response.result.allProducts);
+        const response = await axiosClient.post('/api/hyart/all-category');
+        console.log(response.result);
+        setGetCategory(response.result);
     }catch(error){
         console.log(error);
     }
   }
 
-  const handleDeleteProduct = async (product_id) => {
-    console.log('Product deleted', product_id);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-        const deleteProduct = await axiosClient.post('/api/admin/delete-product', {product_id});
-        if(deleteProduct.status === "ok"){
+        const addCategory = await axiosClient.post('/api/admin/create-category', {name: categoryName});
+        if(addCategory.status === "ok"){
+            setShowAddModal(!showAddModal);
+            getAllCategories();
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+  }
+
+  const handleDeleteCategory = async (category_id) => {
+    try {
+        const deleteCategory = await axiosClient.post('/api/admin/delete-category', {category_id});
+        if(deleteCategory.status === "ok"){
             setShowDeleteModal(!showDeleteModal);
-            getAllProduct();
+            getAllCategories();
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+  }
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const editCategory = await axiosClient.post('/api/admin/update-category', {category_id: editCategoryId, name: categoryName});
+        if(editCategory.status === "ok"){
+            setShowEditModal(!showEditModal);
+            getAllCategories();
         }
     }
     catch(err){
@@ -37,7 +64,7 @@ const Categories = () => {
   }
 
   useEffect(() => {
-    getAllProduct();
+    getAllCategories();
   },[]);
 
   const toggleDeleteModal = () => {
@@ -50,19 +77,6 @@ const Categories = () => {
 
   const toggleEditModal = () => {
     setShowEditModal(!showEditModal);
-  };
-
-  const handleTrendingToggle = () => {
-    setIsTrending(!isTrending);
-  };
-
-  const handleBannerToggle = () => {
-    setIsBanner(!isBanner);
-  };
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
   };
 
   return (
@@ -116,22 +130,25 @@ const Categories = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {getProduct.map((product, index) => (
+                        {getCategory.map((category, index) => (
                             <tr key={index} className="border-b dark:border-gray-600 dark:hover:bg-gray-700">
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <p>
-                                        {product?.category_name}
+                                        {category?.name}
                                     </p>
                                 </td>
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {product?.quantity}
+                                    {category?.products.length}
                                 </td>
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <div className="flex items-center space-x-4">
                                         <button
                                             type="button"
                                             className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                            onClick={toggleEditModal}
+                                            onClick={() => {
+                                                setEditCategoryId(category?._id);
+                                                toggleEditModal();
+                                            }}
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +170,7 @@ const Categories = () => {
                                             type="button"
                                             className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                                             onClick={() => { 
-                                                setDeleteProductId(product?._id);
+                                                setDeleteCategoryId(category?._id);
                                                 toggleDeleteModal();
                                             }}                                        
                                         >
@@ -190,7 +207,7 @@ const Categories = () => {
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
               <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h4 className="text-md font-semibold text-gray-900 dark:text-white">
-                  Add Product
+                  Add Category
                 </h4>
                 <button
                   type="button"
@@ -214,7 +231,7 @@ const Categories = () => {
                 </button>
               </div>
               {/* Modal body */}
-                <form action=''>
+                <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label
@@ -228,131 +245,17 @@ const Categories = () => {
                                 name="name"
                                 id="name"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Product name"
+                                placeholder="Category name"
                                 required
+                                onChange={(e) => setCategoryName(e.target.value)}
                             />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="price"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Price
-                            </label>
-                            <input
-                                type="number"
-                                name="price"
-                                id="price"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Rs 0.00"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="category"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Category
-                            </label>
-                            <select
-                                id="category"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            >
-                                <option selected="">Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="price"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Qantity
-                            </label>
-                            <input
-                                type="number"
-                                name="quantity"
-                                id="quantity"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="0"
-                                required
-                            />
-                        </div>
-                        <div className="sm:col-span-2">
-                            <label
-                                htmlFor="description"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Description
-                            </label>
-                            <textarea
-                                id="description"
-                                rows={2}
-                                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Write product description here"
-                                required
-                                defaultValue={""}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="dropzone-file" className="flex flex-col justify-center items-center w-full h-40 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                                    <svg aria-hidden="true" className="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                    </svg>
-                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                    <span className="font-semibold">Click to upload </span>
-                                    or drag and drop
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or JPEG (MAX SIZE: 5MB)</p>
-                                </div>
-                                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileUpload} />
-                            </label>
-                        </div>
-                        <div className='flex items-center justify-center gap-10'>
-                            <div>
-                                <input
-                                    className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="trendingSwitch"
-                                    checked={isTrending}
-                                    onChange={handleTrendingToggle}
-                                />
-                                <label
-                                    className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                                    htmlFor="trendingSwitch"
-                                >
-                                    Trending
-                                </label>
-                            </div>
-                            <div>
-                                <input
-                                    className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="bannerSwitch"
-                                    checked={isBanner}
-                                    onChange={handleBannerToggle}
-                                />
-                                <label
-                                    className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                                    htmlFor="bannerSwitch"
-                                >
-                                    Banner
-                                </label>
-                            </div>
                         </div>
                     </div>
                     <button
                         type="submit"
                         className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     >
-                        Add product
+                        Add Category
                     </button>
                 </form>
             </div>
@@ -360,14 +263,14 @@ const Categories = () => {
         </div>
     )}
 
-        {/* Eit Product Modal */}
-        {showEditModal && (
+    {/* Edit Product Modal */}
+    {showEditModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
               <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h4 className="text-md font-semibold text-gray-900 dark:text-white">
-                    Edit Product
+                    Edit Category
                 </h4>
                 <button
                   type="button"
@@ -391,7 +294,7 @@ const Categories = () => {
                 </button>
               </div>
               {/* Modal body */}
-                <form action=''>
+                <form>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label
@@ -405,131 +308,17 @@ const Categories = () => {
                                 name="name"
                                 id="name"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Product name"
                                 required
+                                onChange={(e) => setCategoryName(e.target.value)}
                             />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="price"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Price
-                            </label>
-                            <input
-                                type="number"
-                                name="price"
-                                id="price"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Rs 0.00"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="category"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Category
-                            </label>
-                            <select
-                                id="category"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            >
-                                <option selected="">Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="price"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Qantity
-                            </label>
-                            <input
-                                type="number"
-                                name="quantity"
-                                id="quantity"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="0"
-                                required
-                            />
-                        </div>
-                        <div className="sm:col-span-2">
-                            <label
-                                htmlFor="description"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Description
-                            </label>
-                            <textarea
-                                id="description"
-                                rows={2}
-                                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Write product description here"
-                                required
-                                defaultValue={""}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="dropzone-file" className="flex flex-col justify-center items-center w-full h-40 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                                    <svg aria-hidden="true" className="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                    </svg>
-                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                    <span className="font-semibold">Click to upload </span>
-                                    or drag and drop
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or JPEG (MAX SIZE: 5MB)</p>
-                                </div>
-                                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileUpload} />
-                            </label>
-                        </div>
-                        <div className='flex items-center justify-center gap-10'>
-                            <div>
-                                <input
-                                    className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="trendingSwitch"
-                                    checked={isTrending}
-                                    onChange={handleTrendingToggle}
-                                />
-                                <label
-                                    className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                                    htmlFor="trendingSwitch"
-                                >
-                                    Trending
-                                </label>
-                            </div>
-                            <div>
-                                <input
-                                    className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="bannerSwitch"
-                                    checked={isBanner}
-                                    onChange={handleBannerToggle}
-                                />
-                                <label
-                                    className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                                    htmlFor="bannerSwitch"
-                                >
-                                    Banner
-                                </label>
-                            </div>
                         </div>
                     </div>
                     <button
                         type="submit"
                         className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                        onClick={handleEditSubmit}
                     >
-                        Update product
+                        Update Category
                     </button>
                 </form>
             </div>
@@ -537,7 +326,6 @@ const Categories = () => {
         </div>
     )}
    
-
     {/* Delete Modal */}
     {showDeleteModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -577,7 +365,7 @@ const Categories = () => {
               />
             </svg>
             <p className="mb-4 text-gray-500 dark:text-gray-300">
-              Are you sure you want to delete this product?
+              Are you sure you want to delete this category?
             </p>
             <div className="flex justify-center items-center space-x-4">
               <button
@@ -590,7 +378,7 @@ const Categories = () => {
               <button
                 type="submit"
                 className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
-                onClick={() => handleDeleteProduct(deleteProductId)}
+                onClick={() => handleDeleteCategory(deleteCategoryId)}
               >
                 Yes, I'm sure
               </button>
