@@ -87,7 +87,7 @@ const Header = () => {
         <Flex className="flex items-center justify-between h-full">
           <Link to="/">
             <div>
-              <img className="w-32 object-cover" src={Logo} />
+              <img className="w-32 object-cover" src={Logo} alt="logo"/>
             </div>
           </Link>
           <div>
@@ -176,7 +176,7 @@ const Header = () => {
                           <img
                               className="w-8 h-8 rounded-full"
                               src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
-                              alt="user photo"
+                              alt="user"
                           />
                       </button>
                       <div className={`${isOpen ? 'block' : 'hidden'}`}>
