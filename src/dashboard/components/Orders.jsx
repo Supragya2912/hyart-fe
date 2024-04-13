@@ -36,6 +36,7 @@ const Orders = () => {
             console.log(response);
             if (response.status === 'ok' && response.statusCode === 200) {
                 console.log("Order status updated successfully");
+                setStatus('');
                 getOrders();
             } else {
                 console.error("Failed to update order status");
@@ -206,6 +207,7 @@ const Orders = () => {
                                                     className="bg-primary-500 text-white px-4 py-2 rounded-lg"
                                                     onClick={() => {
                                                         setUpdateStatus(true);
+                                                        setStatus(order.status);
                                                         setOrderIdToUpdate(order._id);
                                                     }}
                                                 >
