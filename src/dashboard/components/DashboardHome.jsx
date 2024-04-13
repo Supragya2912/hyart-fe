@@ -93,7 +93,7 @@ const DashboardHome = () => {
           <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Pending Orders</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Pending Delivery</p>
                 <p className="text-lg font-semibold dark:text-gray-200">{counts?.pendingOrders}</p>
               </div>
               <div className="p-3 bg-red-500 text-white rounded-full">
@@ -115,7 +115,7 @@ const DashboardHome = () => {
           <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Completed Orders</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Delivered Orders</p>
                 <p className="text-lg font-semibold dark:text-gray-200">{counts?.completedOrders}</p>
               </div>
               <div className="p-3 bg-green-500 text-white rounded-full">

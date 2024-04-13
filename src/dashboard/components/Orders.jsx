@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { axiosClient } from '../../utils/axiosClient';
 
 const Orders = () => {
+
     const [orders, setOrders] = useState([]);
     const [updateStatus, setUpdateStatus] = useState(false);
     const [status, setStatus] = useState('');
@@ -44,6 +45,25 @@ const Orders = () => {
         }
     };
 
+
+    const getOrderStatusColor = (status) => {
+        switch (status.toLowerCase()) {
+            case "pending":
+                return "text-yellow-500";
+            case "confirmed":
+                return "text-green-500";
+            case "shipped":
+                return "text-blue-500";
+            case "delivered":
+                return "text-green-800";
+            case "cancelled":
+                return "text-red-500";
+            default:
+                return "text-gray-500";
+        }
+    };
+
+    
     return (
         <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
             <div className="mx-auto max-w-screen-2xl px-4 lg:px-12">
@@ -148,7 +168,9 @@ const Orders = () => {
                                                     <option value="cancelled">Cancelled</option>
                                                 </select>
                                             ) : (
-                                                <span>{order.status.toUpperCase()}</span>
+                                                <span className={`font-bold ${getOrderStatusColor(order.status.toLowerCase())}`}>
+                                                {order.status.toUpperCase()}
+                                            </span>
                                             )}
                                         </td>
                                         <td className="px-4 py-3">
