@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
 import { motion } from "framer-motion";
 import Flex from "../components/Layouts/Flex";
-import Logo from "../assets/movix-logo.svg";
+import Logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
 import { RiShoppingCart2Line } from "react-icons/ri";
 import { useDispatch } from 'react-redux';

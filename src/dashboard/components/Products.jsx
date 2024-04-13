@@ -176,12 +176,6 @@ const Products = () => {
                             <th scope="col" className="p-4">
                                 Quantity
                             </th>
-                            <th scope="col" className="p-4">
-                                Sales/Day
-                            </th>
-                            <th scope="col" className="p-4">
-                                Sales/Month
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -192,7 +186,7 @@ const Products = () => {
                                         <img
                                             src={product?.image?.url} 
                                             alt={product?.name} 
-                                            className="h-8 w-auto mr-3"
+                                            className="h-8 w-8 mr-3"
                                         />
                                         {product?.name}
                                     </div>
@@ -214,8 +208,6 @@ const Products = () => {
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {product?.quantity}
                                 </td>
-                                <td className="px-4 py-3">Rs 3200</td> 
-                                <td className="px-4 py-3">Rs 3200</td>
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <div className="flex items-center space-x-4">
                                         <button

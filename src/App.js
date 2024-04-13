@@ -83,7 +83,7 @@ function App() {
   }, [toastData]);
 
   return (
-  <div>
+  <div className="nourd-text">
     <LoadingBar color='#5f9fff' ref={loadingRef} />
     <div><Toaster/></div>
     <Routes>

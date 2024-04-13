@@ -50,9 +50,6 @@ const Customers = () => {
                             <th scope="col" className="p-4">
                                 Phone Number
                             </th>
-                            <th scope="col" className="p-4">
-                                Total Spent
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,7 +71,6 @@ const Customers = () => {
                                     </p>
                                 </td>
                                 <td className="px-4 py-3">{user?.phoneNumber}</td> 
-                                <td className="px-4 py-3">Rs 3200</td>
                             </tr>
                         ))}
                     </tbody>

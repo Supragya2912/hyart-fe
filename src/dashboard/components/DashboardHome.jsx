@@ -8,7 +8,6 @@ import { HiTemplate } from "react-icons/hi";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 const DashboardHome = () => {
-
   const [counts, setCounts] = useState({});
   const [earnings, setEarnings] = useState(null);
   const [filter, setFilter] = useState("day");
@@ -26,7 +25,6 @@ const DashboardHome = () => {
   const getEarnings = useCallback(async () => {
     try {
       const response = await axiosClient.post('/api/admin/earning', { filter: filter });
-      console.log(response.result);
       setEarnings(response.result);
     } catch (error) {
       console.log(error);
@@ -131,7 +129,26 @@ const DashboardHome = () => {
       </div>
       <div className='mt-14 flex justify-between items-center'>
         <div>
-          <h1 className="text-2xl mb-5 font-semibold text-gray-800 dark:text-white">Earnings</h1>
+          <div className='flex'>
+            <div>
+              <h1 className="text-2xl mb-5 font-semibold text-gray-800 dark:text-white">Earnings</h1>
+            </div>
+            <div>
+              <select
+                id="category"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 w-32 ml-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                onChange={(e) => setFilter(e.target.value)}
+                value={filter}
+              >
+                <option value="day">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="month">This Month</option>
+                <option value="year">This Year</option>
+                <option value="lastmonth">Last Month</option>
+                <option value="lastyear">Last Year</option>
+              </select>
+            </div>
+          </div>
           <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -141,23 +158,9 @@ const DashboardHome = () => {
             </div>
           </div>
         </div>
-        <select
-          id="category"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 w-32 ml-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-          onChange={(e) => setFilter(e.target.value)}
-          value={filter}
-        >
-          <option value="day">Today</option>
-          <option value="yesterday">Yesterday</option>
-          <option value="month">This Month</option>
-          <option value="year">This Year</option>
-          <option value="lastmonth">Last Month</option>
-          <option value="lastyear">Last Year</option>
-        </select>
       </div>
     </section>
   )
 }
 
-export default DashboardHome
-
+export default DashboardHome;
