@@ -8,6 +8,7 @@ import Orders from "./components/Orders";
 import DashboardHome from "./components/DashboardHome";
 import { axiosClient } from "../utils/axiosClient";
 import { KEY_ACCESS_TOKEN, removeItem } from "../utils/localStorageManager";
+import Coupons from "./components/Coupons";
 
 const navigationList = [
   {
@@ -152,6 +153,31 @@ const navigationList = [
       </svg>
     ),
   },
+  {
+    name: "Coupons",
+    path: "/admin/dashboard/coupons",
+    svg: (
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 18 18"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="group-hover:fill-[#4F80E1] fill-[#637381]"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M1.5 3C1.5 2.58579 1.83579 2.25 2.25 2.25H15.75C16.1642 2.25 16.5 2.58579 16.5 3V15C16.5 15.4142 16.1642 15.75 15.75 15.75H2.25C1.83579 15.75 1.5 15.4142 1.5 15V3ZM3 4V14H15V4H3Z"
+        />
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M6 6.75C6 6.33579 6.33579 6 6.75 6H11.25C11.6642 6 12 6.33579 12 6.75V11.25C12 11.6642 11.6642 12 11.25 12H6.75C6.33579 12 6 11.6642 6 11.25V6.75Z"
+        />
+      </svg>
+    )
+  }
 ];
 
 const Dashboard = () => {
@@ -170,6 +196,8 @@ const Dashboard = () => {
         return <Categories />;
       case "/admin/dashboard/orders":
         return <Orders />;
+      case "/admin/dashboard/coupons":
+        return <Coupons />;
       default:
         return null;
     }

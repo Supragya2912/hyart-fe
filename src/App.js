@@ -30,8 +30,10 @@ import Products from "./dashboard/components/Products";
 import Customers from "./dashboard/components/Customers";
 import Categories from "./dashboard/components/Categories";
 import Orders from "./dashboard/components/Orders";
+import Coupons from "./dashboard/components/Coupons";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Update from "./pages/Update";
 
 const Layout = () => {
   return (
@@ -97,6 +99,7 @@ function App() {
             <Route path="/contact" element={<Contact />}></Route>
             <Route path="/product/:id" element={<SingleProduct />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
+            <Route path="/update" element={<Update />}></Route>
             <Route path="/payments/:status" element={<Payment />}></Route>
             <Route path="/terms-conditions" element={<TermsConditions />}></Route>
             <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
@@ -107,6 +110,7 @@ function App() {
               <Route path="customers" element={<Customers />} />
               <Route path="categories" element={<Categories />} />
               <Route path="orders" element={<Orders />} />
+              <Route path="coupons" element={<Coupons />} />
           </Route>
       </Route>
       <Route element={<RequireLogin/>}>
