@@ -45,6 +45,25 @@ const Orders = () => {
         }
     };
 
+    const handleCODPayment = async (orderId, status) => {
+
+        try {
+            const response = await axiosClient.post('/api/admin/delivered-cod', {
+                order_id: orderId,
+                status: status
+            });
+            console.log(response);
+            if (response.status === 'ok' && response.statusCode === 200) {
+                console.log("Order status updated successfully");
+                setStatus('');
+                getOrders();
+            } else {
+                console.error("Failed to update order status");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const getOrderStatusColor = (status) => {
         switch (status.toLowerCase()) {
@@ -188,8 +207,15 @@ const Orders = () => {
                                                             <button
                                                                 className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2"
                                                                 onClick={() => {
+
+                                                                    if (order.payment.paymentMethod === "cod" && status === 'delivered') {
+                                                                        handleCODPayment(order._id, status);
+                                                                        setUpdateStatus(false);
+                                                                    } else {
+
                                                                     handleUpdateStatus(order._id, status);
                                                                     setUpdateStatus(false);
+                                                                    }
                                                                 }}
                                                             >
                                                                 Save
