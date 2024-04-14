@@ -6,13 +6,26 @@ import { resetCart } from "../../redux/slices/cartSlice";
 import ItemCard from "./ItemCard";
 import Logo from "../../assets/movix-logo.svg";
 import {axiosClient} from "../../utils/axiosClient";
+import {
+  TERipple,
+  TEModal,
+  TEModalDialog,
+  TEModalContent,
+  TEModalHeader,
+  TEModalBody,
+  TEModalFooter,
+} from "tw-elements-react";
+import { LiaPlusCircleSolid } from "react-icons/lia";
 
 const Cart = () => {
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cartReducer.products);
   const [totalAmt, setTotalAmt] = useState("");
   const [shippingCharge, setShippingCharge] = useState("");
+
+  const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
   useEffect(() => {
     let price = 0;
@@ -139,44 +152,78 @@ const Cart = () => {
               </button>
             </div>
           </div>
-          <div className="max-w-7xl gap-4 flex justify-end mt-4">
-            <div className="w-96 flex flex-col gap-4">
-              <h1 className="text-2xl text-right">Total Amount</h1>
+          <div className="grid grid-cols-2 p-8">
+            <div className="mt-4">
+              <h1 className="mb-5 text-2xl">Shipping Address:</h1>
               <div>
-                <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
-                  Subtotal
-                  <span className="font-titleFont">
-                    Rs {totalAmt}
-                  </span>
-                </p>
-                <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
-                  Shipping Charge
-                  <span className="font-titleFont">
-                    Rs {shippingCharge}
-                  </span>
-                </p>
-                <p className="flex items-center justify-between border-[1px] border-gray-400 py-1.5 text-lg px-4 font-medium">
-                  Total
-                  <span className="text-lg font-titleFont">
-                    Rs {totalAmt + shippingCharge}
-                  </span>
-                </p>
+                {
+                  myProfile?.location?.address ? (
+                    <div className="flex flex-col gap-4">
+                      <p className="text-2xl">{myProfile?.location?.address}, {myProfile?.location?.city}-{myProfile?.location.pincode}, {myProfile?.location?.state}, {myProfile?.location?.country}</p>
+                      <button
+                        type="button"
+                        className="inline-block max-w-fit rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                        onClick={() => navigate('/update')}
+                      >
+                        Update Address
+                      </button>
+                    </div>
+                  ) : (
+                  <Link to="/update" className="flex items-center">
+                    <button
+                      type="button"
+                      className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                      onClick={() => navigate('/update')}
+                    >
+                      <span className="flex gap-1 justify-center items-center">
+                        <span>Add Address </span> 
+                        <span><LiaPlusCircleSolid className="text-[15px]"/></span>
+                      </span>
+                    </button>
+                  </Link>
+                  )
+                }
               </div>
-              <div className="flex gap-2 justify-end">
-                  <button
-                    type="button"
-                    className="inline-block rounded-lg bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                    onClick={handlePayment}
-                  >
-                    Pay Now
-                  </button>
-                  <button
-                    type="button"
-                    className="inline-block rounded-lg bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                    onClick={handleCOD}
-                  >
-                    Cash on Delivery
-                  </button>
+            </div>          
+            <div className="max-w-7xl gap-4 flex justify-end mt-4">
+              <div className="w-96 flex flex-col gap-4">
+                <h1 className="text-2xl text-right">Total Amount</h1>
+                <div>
+                  <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
+                    Subtotal
+                    <span className="font-titleFont">
+                      Rs {totalAmt}
+                    </span>
+                  </p>
+                  <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
+                    Shipping Charge
+                    <span className="font-titleFont">
+                      Rs {shippingCharge}
+                    </span>
+                  </p>
+                  <p className="flex items-center justify-between border-[1px] border-gray-400 py-1.5 text-lg px-4 font-medium">
+                    Total
+                    <span className="text-lg font-titleFont">
+                      Rs {totalAmt + shippingCharge}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex gap-2 justify-end">
+                    <button
+                      type="button"
+                      className="inline-block rounded-lg bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
+                      onClick={handlePayment}
+                    >
+                      Pay Now
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-block rounded-lg bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Cash on Delivery
+                    </button>
+                </div>
               </div>
             </div>
           </div>
@@ -213,6 +260,62 @@ const Cart = () => {
           </div>
         </motion.div>
       )}
+
+      <TEModal show={showModal} setShow={setShowModal}>
+        <TEModalDialog>
+          <TEModalContent>
+            <TEModalHeader>
+              <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
+                Cash on Delivery
+              </h5>
+              <button
+                type="button"
+                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                onClick={() => setShowModal(false)}
+                aria-label="Close"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </TEModalHeader>
+            <TEModalBody>
+              Are you sure you want to place the order with Cash on Delivery?
+            </TEModalBody>
+            <TEModalFooter>
+              <TERipple rippleColor="light">
+                <button
+                  type="button"
+                  className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+              </TERipple>
+              <TERipple rippleColor="light">
+                <button
+                  type="button"
+                  className="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                  onClick={handleCOD}
+                >
+                  Place Order
+                </button>
+              </TERipple>
+            </TEModalFooter>
+          </TEModalContent>
+        </TEModalDialog>
+      </TEModal>
     </div>
   );
 };

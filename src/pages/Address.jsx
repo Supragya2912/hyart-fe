@@ -18,14 +18,13 @@ const Address = () => {
       setCity(myProfile?.location?.city || "");
       setState(myProfile?.location?.state || "");
       setPincode(myProfile?.location?.pincode || "");
-      setCountry(myProfile?.location?.country || "");
+      setCountry(myProfile?.location?.country || "India");
     }
   }, [myProfile]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-
       const locationData = {
         location: {
             city,
@@ -35,8 +34,8 @@ const Address = () => {
             country,
         }
     };
-
-      await axiosClient.post("/api/auth/update-profile", locationData);
+      const data = await axiosClient.post("/api/auth/update-profile", locationData);
+      data ? window.location.reload() : console.log("Error");
     } catch (error) {
       console.log(error);
     }
