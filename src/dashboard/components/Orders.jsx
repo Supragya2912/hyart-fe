@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { axiosClient } from '../../utils/axiosClient';
 
@@ -88,11 +87,11 @@ const Orders = () => {
                                     <th scope="col" className="px-16">
                                         Email
                                     </th>
-                                    <th scope="col" className="px-16">
+                                    <th scope="col" className="px-10">
                                         Name
                                     </th>
-                                    <th scope="col" className="p-4">
-                                        Phone Number
+                                    <th scope="col" className="px-8">
+                                        Number
                                     </th>
                                     <th scope="col" className="p-4">
                                         Products
@@ -109,7 +108,13 @@ const Orders = () => {
                                     <th scope="col" className="p-8">
                                         Total Amount
                                     </th>
-                                    <th scope="col" className="px-10">
+                                    <th scope="col" className="p-12">
+                                        Date
+                                    </th>
+                                    <th scope="col" className="p-8">
+                                        Payment method
+                                    </th>
+                                    <th scope="col" className="px-6">
                                         Status
                                     </th>
                                     <th scope="col" className="px-16">
@@ -131,9 +136,7 @@ const Orders = () => {
                                             </p>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <p className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
-                                                {order?.user_id?.name}
-                                            </p>
+                                            {order?.user_id?.name}
                                         </td>
                                         <td className="px-4 py-3">
                                             <p className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
@@ -155,6 +158,8 @@ const Orders = () => {
                                         <td className="px-4 py-3">{order?.couponApplied ? "Applied" : "NA"}</td>
                                         <td className="px-4 py-3">{order?.couponDiscountAmount}</td>
                                         <td className="px-4 py-3">Rs. {order?.totalAmount}</td>
+                                        <td className="px-4 py-3">{new Date(order?.createdAt).toLocaleString()}</td>
+                                        <td className="px-4 py-3">{order?.payment?.paymentMethod}</td>
                                         <td className="px-4 py-3">
                                             {updateStatus && orderIdToUpdate === order._id ? (
                                                 <select

@@ -30,6 +30,8 @@ import Products from "./dashboard/components/Products";
 import Customers from "./dashboard/components/Customers";
 import Categories from "./dashboard/components/Categories";
 import Orders from "./dashboard/components/Orders";
+import TermsConditions from "./pages/TermsConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const Layout = () => {
   return (
@@ -96,6 +98,8 @@ function App() {
             <Route path="/product/:id" element={<SingleProduct />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
             <Route path="/payments/:status" element={<Payment />}></Route>
+            <Route path="/terms-conditions" element={<TermsConditions />}></Route>
+            <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
             <Route path="*" element={<Error />} />
           </Route>
           <Route path="/admin/dashboard" element={<Dashboard />} >

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FaInstagram } from "react-icons/fa";
 import creditCardImg from "../assets/creditcardicons.png";
 
@@ -10,29 +11,24 @@ const Footer = () => {
                 <h1 className='text-center'>HYART JEWELLERY</h1>
                 <nav className="sm:columns-2 -mb-6 mt-8 flex flex-wrap sm:flex-nowrap gap-3 sm:gap-0 justify-center sm:space-x-8" aria-label="Footer">
                     <div className="pb-6">
-                        <span className="cursor-pointer text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline">
+                        <Link to="/about" className="cursor-pointer hover:underline text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline]">
                             About us
-                        </span>
+                        </Link>
                     </div>
                     <div className="pb-6">
-                        <span className="cursor-pointer text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline">
-                            Exchange &amp; Return Policy
-                        </span>
-                    </div>
-                    <div className="pb-6">
-                        <span className="cursor-pointer text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline">
+                        <Link to="/contact" className="cursor-pointer hover:underline text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline]">
                             Contact us
-                        </span>
+                        </Link>
                     </div>
                     <div className="pb-6">
-                        <span className="cursor-pointer text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline">
+                        <Link to="/terms-conditions" className="cursor-pointer hover:underline text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline]">
                             Terms &amp; Conditions
-                        </span>
+                        </Link>
                     </div>
                     <div className="pb-6">
-                        <span className="cursor-pointer text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline">
+                        <Link to="/privacy-policy" className="cursor-pointer hover:underline text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline]">
                             Privacy Policy
-                        </span>
+                        </Link>
                     </div>
                 </nav>
                 <div className="flex justify-center mt-8">

@@ -13,7 +13,7 @@ function Payments() {
     const infoData = {
         success: {
             message: "Hurrah! Your order has been placed 😊",
-            cta: 'Thank you for using our website',
+            cta: 'Thank you for shopping with us!',
             icon: <BsFillCartCheckFill />,
         },
         failed: {
