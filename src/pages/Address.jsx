@@ -25,13 +25,18 @@ const Address = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await axiosClient.post("/api/auth/update-profile", {
-        address,
-        city,
-        state,
-        pincode,
-        country,
-      });
+
+      const locationData = {
+        location: {
+            city,
+            state,
+            pincode,
+            address,
+            country,
+        }
+    };
+
+      await axiosClient.post("/api/auth/update-profile", locationData);
     } catch (error) {
       console.log(error);
     }
