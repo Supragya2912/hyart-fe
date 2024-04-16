@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { axiosClient } from '../../utils/axiosClient';
 
 const Orders = () => {
-
     const [orders, setOrders] = useState([]);
     const [updateStatus, setUpdateStatus] = useState(false);
     const [status, setStatus] = useState('');
@@ -186,8 +185,6 @@ const Orders = () => {
                                                     onChange={(e) => setStatus(e.target.value)}
                                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                 >
-                                                    <option value="pending">Pending</option>
-                                                    <option value="confirmed">Confirmed</option>
                                                     <option value="shipped">Shipped</option>
                                                     <option value="delivered">Delivered</option>
                                                     <option value="cancelled">Cancelled</option>
