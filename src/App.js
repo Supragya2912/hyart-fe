@@ -34,6 +34,8 @@ import Coupons from "./dashboard/components/Coupons";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Update from "./pages/Update";
+import Settings from "./pages/Settings";
+import MyOrders from "./pages/MyOrders";
 
 const Layout = () => {
   return (
@@ -103,6 +105,8 @@ function App() {
             <Route path="/payments/:status" element={<Payment />}></Route>
             <Route path="/terms-conditions" element={<TermsConditions />}></Route>
             <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
+            <Route path="/settings" element={<Settings />}></Route>
+            <Route path="/myorders" element={<MyOrders />}></Route>
             <Route path="*" element={<Error />} />
           </Route>
           <Route path="/admin/dashboard" element={<Dashboard />} >

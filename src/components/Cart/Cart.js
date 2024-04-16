@@ -32,8 +32,6 @@ const Cart = () => {
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
   const handleCoupon = async () => {
-
-    console.log(couponCode)
     if(couponCode === "") {
       toast.error("Please enter a valid coupon code");
       return;
@@ -41,8 +39,7 @@ const Cart = () => {
     else{
       setCouponApplied(true);
       toast.success("Coupon Applied");
-    }
-   
+    }  
   }
 
   useEffect(() => {
@@ -55,16 +52,14 @@ const Cart = () => {
   }, [products]);
 
   useEffect(() => {
-    if (totalAmt <= 200) {
+    if (totalAmt <= 200)
       setShippingCharge(30);
-    } else if (totalAmt <= 400) {
+    else if (totalAmt <= 400)
       setShippingCharge(25);
-    } else if (totalAmt > 401) {
+    else if (totalAmt > 401)
       setShippingCharge(20);
-    }
   }, [totalAmt]);
 
-  
   const initPayment = (data) => {
     console.log("STEP 4 --", data);
       const options = {
@@ -135,7 +130,6 @@ const Cart = () => {
 
   const handleCOD = async () => {
     try{
-
       let payload = {
         products: products?.map((item) => ({
           product_id: item._id,
@@ -159,8 +153,6 @@ const Cart = () => {
       console.log(error);
     }
   }
-
-  
 
   return (
     <div className="max-w-container mx-auto px-4">

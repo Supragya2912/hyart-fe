@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
 import { motion } from "framer-motion";
@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { getMyProfile } from '../redux/slices/appConfigSlice';
 import { axiosClient } from "../utils/axiosClient";
 import { KEY_ACCESS_TOKEN, removeItem } from "../utils/localStorageManager";
+import UserPic from "../assets/user.png";
 
 const navBarList = [
   {
@@ -46,6 +47,22 @@ const Header = () => {
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
   console.log(myProfile);
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getMyProfile())
@@ -154,7 +171,7 @@ const Header = () => {
             )}
           </div>
 
-          <div className="flex gap-10 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
+          <div className="flex mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
               {!loading ? (
                 myProfile ? (
                   myProfile?.role === "admin" ? (
@@ -165,7 +182,7 @@ const Header = () => {
                       Dashboard
                     </button>
                   ) : (
-                    <div>
+                    <div className="pr-12" ref={dropdownRef}>
                       <button
                           type="button"
                           className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-100"
@@ -173,24 +190,26 @@ const Header = () => {
                           aria-expanded={isOpen}
                           onClick={toggleDropdown}
                       >
+                        <div className="w-[40px] h-[40px] rounded-full">
                           <img
-                              className="w-8 h-8 rounded-full"
-                              src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+                              className="w-full h-full cursor-pointer rounded-full object-cover"
+                              src={myProfile?.userAvatar?.url ? myProfile?.userAvatar?.url : UserPic}
                               alt="user"
                           />
+                        </div>
                       </button>
                       <div className={`${isOpen ? 'block' : 'hidden'}`}>
-                        <div className="absolute z-50 my-4 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
+                        <div className="absolute z-50 my-4 w-52 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
                             <div className="py-3 px-4">
                                 <span className="block text-sm font-semibold text-gray-900 dark:text-white">{myProfile?.name}</span>
                                 <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{myProfile?.email}</span>
                             </div>
                             <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                                 <li>
-                                    <Link to="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My Orders</Link>
+                                    <Link to="/myorders" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My Orders</Link>
                                 </li>
                                 <li>
-                                    <Link to="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</Link>
+                                    <Link to="/settings" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</Link>
                                 </li>
                             </ul>
                             <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
