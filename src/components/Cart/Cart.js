@@ -14,6 +14,7 @@ import {
   TEModalHeader,
   TEModalBody,
   TEModalFooter,
+  TEInput
 } from "tw-elements-react";
 import { LiaPlusCircleSolid } from "react-icons/lia";
 
@@ -24,6 +25,7 @@ const Cart = () => {
   const products = useSelector((state) => state.cartReducer.products);
   const [totalAmt, setTotalAmt] = useState("");
   const [shippingCharge, setShippingCharge] = useState("");
+  const [couponCode, setCouponCode] = useState("");
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
@@ -139,11 +141,13 @@ const Cart = () => {
 
           <div className="flex flex-col mdl:flex-row justify-between border py-4 px-4 items-center gap-2 mdl:gap-0">
             <div className="flex items-center gap-4">
-              <input
-                className="w-44 mdl:w-52 h-8 px-4 border text-primeColor text-sm outline-none border-gray-400"
-                type="text"
-                placeholder="Coupon Number"
-              />
+              <TEInput
+                    type="text"
+                    label="Coupon Code"
+                    size="md"
+                    id='couponCode'
+                    onChange={(e) => setCouponCode(e.target.value)}
+              ></TEInput>
               <button
                 type="button"
                 className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
