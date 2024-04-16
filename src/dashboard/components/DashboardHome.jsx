@@ -6,6 +6,7 @@ import { BiSolidCategoryAlt } from "react-icons/bi";
 import { TiCancel } from "react-icons/ti";
 import { HiTemplate } from "react-icons/hi";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { RiCouponLine } from "react-icons/ri";
 
 const DashboardHome = () => {
   const [counts, setCounts] = useState({});
@@ -122,6 +123,17 @@ const DashboardHome = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Total Coupons</p>
+                <p className="text-lg font-semibold dark:text-gray-200">{counts?.totalCoupons}</p>
+              </div>
+              <div className="p-3 bg-green-500 text-white rounded-full">
+                <RiCouponLine />
               </div>
             </div>
           </div>
