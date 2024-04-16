@@ -17,6 +17,7 @@ import {
   TEInput
 } from "tw-elements-react";
 import { LiaPlusCircleSolid } from "react-icons/lia";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,8 +27,23 @@ const Cart = () => {
   const [totalAmt, setTotalAmt] = useState("");
   const [shippingCharge, setShippingCharge] = useState("");
   const [couponCode, setCouponCode] = useState("");
+  const [couponApplied, setCouponApplied] = useState(false);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
+
+  const handleCoupon = async () => {
+
+    console.log(couponCode)
+    if(couponCode === "") {
+      toast.error("Please enter a valid coupon code");
+      return;
+    } 
+    else{
+      setCouponApplied(true);
+      toast.success("Coupon Applied");
+    }
+   
+  }
 
   useEffect(() => {
     let price = 0;
@@ -48,6 +64,7 @@ const Cart = () => {
     }
   }, [totalAmt]);
 
+  
   const initPayment = (data) => {
     console.log("STEP 4 --", data);
       const options = {
@@ -88,12 +105,25 @@ const Cart = () => {
 
   const handlePayment = async () => {
     try{
-      const orderUrl = await axiosClient.post('/api/user/place-order', {
+
+      let payload = {
         products: products?.map((item) => ({
           product_id: item._id,
           quantity: item.quantity,
         }))
-      });
+      }
+      
+      console.log("COUPON APPLIED --", couponApplied);
+      console.log("COUPON CODE --", couponCode);
+
+      if(couponApplied) {
+        payload = {
+          ...payload,
+          couponCode
+        }
+      }
+
+      const orderUrl = await axiosClient.post('/api/user/place-order', payload);
 
       console.log("STEP 1 --", orderUrl);
       initPayment(orderUrl.result);
@@ -105,12 +135,23 @@ const Cart = () => {
 
   const handleCOD = async () => {
     try{
-      await axiosClient.post('/api/user/place-cod-order', {
+
+      let payload = {
         products: products?.map((item) => ({
           product_id: item._id,
           quantity: item.quantity,
         }))
-      });
+      }
+
+
+      if(couponApplied) {
+        payload = {
+          ...payload,
+          couponCode
+        }
+      }
+
+      await axiosClient.post('/api/user/place-cod-order', payload);
 
       navigate('/payments/success');
   
@@ -118,6 +159,8 @@ const Cart = () => {
       console.log(error);
     }
   }
+
+  
 
   return (
     <div className="max-w-container mx-auto px-4">
@@ -146,11 +189,15 @@ const Cart = () => {
                     label="Coupon Code"
                     size="md"
                     id='couponCode'
+                    value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
               ></TEInput>
               <button
                 type="button"
                 className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
+                onClick={
+                  handleCoupon
+              }
               >
                 Apply Coupon
               </button>
