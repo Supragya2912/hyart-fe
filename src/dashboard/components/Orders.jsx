@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { axiosClient } from '../../utils/axiosClient';
 
@@ -8,7 +9,6 @@ const Orders = () => {
     const [orderIdToUpdate, setOrderIdToUpdate] = useState(null);
 
     console.log(orders);
-    console.log(status);
 
     const ordersCount = orders.length;
 
@@ -82,6 +82,8 @@ const Orders = () => {
         }
     };
 
+
+    console.log("STATUS", status);
     
     return (
         <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
@@ -182,10 +184,11 @@ const Orders = () => {
                                         <td className="px-4 py-3">
                                             {updateStatus && orderIdToUpdate === order._id ? (
                                                 <select
-                                                    value={status}
+                                                    
                                                     onChange={(e) => setStatus(e.target.value)}
                                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                 >
+                                                    <option value="">Select Status</option>
                                                     <option value="shipped">Shipped</option>
                                                     <option value="delivered">Delivered</option>
                                                     <option value="cancelled">Cancelled</option>
@@ -236,7 +239,6 @@ const Orders = () => {
                                                     className="bg-primary-500 text-white px-4 py-2 rounded-lg"
                                                     onClick={() => {
                                                         setUpdateStatus(true);
-                                                        setStatus(order.status);
                                                         setOrderIdToUpdate(order._id);
                                                     }}
                                                 >

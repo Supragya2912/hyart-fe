@@ -14,7 +14,11 @@ import {
   TEModalHeader,
   TEModalBody,
   TEModalFooter,
-  TEInput
+  TEInput,
+  TEDropdown,
+  TEDropdownToggle,
+  TEDropdownMenu,
+  TEDropdownItem,
 } from "tw-elements-react";
 import { LiaPlusCircleSolid } from "react-icons/lia";
 import { toast } from "react-toastify";
@@ -29,6 +33,8 @@ const Cart = () => {
   const [couponCode, setCouponCode] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('online');
+  const [getCoupon, setGetCoupon] = useState([]);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
@@ -42,6 +48,29 @@ const Cart = () => {
       toast.success("Coupon Applied");
     }  
   }
+
+  const handleCouponCopy = (couponCode) => {
+    navigator.clipboard.writeText(couponCode)
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 10);
+      })
+      .catch((error) => console.error('Error copying: ', error));
+  };
+
+  async function getAllCoupons(){
+    try{
+        const response = await axiosClient.post('/api/hyart/list-coupons');
+        console.log(response.result);
+        setGetCoupon(response.result);
+    }catch(error){
+        console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getAllCoupons();
+  }, []);
 
   useEffect(() => {
     let price = 0;
@@ -187,15 +216,55 @@ const Cart = () => {
               ></TEInput>
               <button
                 type="button"
-                className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
+                className="inline-block rounded bg-neutral-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
                 onClick={
                   handleCoupon
               }
               >
                 Apply Coupon
               </button>
+              <TEDropdown className="flex justify-center">
+                <TERipple rippleColor="light">
+                  <TEDropdownToggle className="flex items-center whitespace-nowrap rounded bg-primary px-4 py-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                    Available Coupons
+                    <span className="ml-2 [&>svg]:w-5 w-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </TEDropdownToggle>
+                </TERipple>
+                <TEDropdownMenu>
+                  {getCoupon.map((coupon, index) => (
+                    <TEDropdownItem key={index}>
+                      <p
+                        className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
+                        onClick={() => handleCouponCopy(coupon.code)}
+                      >
+                        {coupon?.code}
+                      </p>
+                    </TEDropdownItem>
+                  ))}
+                </TEDropdownMenu>
+              </TEDropdown>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-md">Have a coupon?</span>
+                <span className="text-md">Apply it here</span>
+                {copySuccess && toast.success("Coupon code copied")}
+              </div>
             </div>
           </div>
+
           <div className="grid grid-cols-2 p-8">
             <div className="mt-4">
               <h1 className="mb-5 text-2xl font-semibold">Shipping Address</h1>
