@@ -8,6 +8,7 @@ const Orders = () => {
     const [orderIdToUpdate, setOrderIdToUpdate] = useState(null);
 
     console.log(orders);
+    console.log(status);
 
     const ordersCount = orders.length;
 

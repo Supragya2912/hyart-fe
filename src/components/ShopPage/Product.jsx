@@ -2,7 +2,6 @@ import React from "react";
 import { BsSuitHeartFill } from "react-icons/bs";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdOutlineLabelImportant } from "react-icons/md";
-import Image from "../Layouts/Image";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
@@ -33,7 +32,7 @@ const Product = (props) => {
     <div className="w-full relative group">
       <div className="max-w-80 h-72 relative overflow-y-hidden">
         <div onClick={handleProductDetails}>
-          <Image className="w-full h-full" imgSrc={props.img} />
+          <img className="w-full h-full" src={props.img} alt="logo" />
         </div>
         <div className="w-full h-32 absolute bg-white -bottom-[130px] group-hover:bottom-0 duration-700">
           <ul className="w-full h-full flex flex-col items-end justify-center gap-2 font-titleFont px-2 border-l border-r">
