@@ -5,7 +5,6 @@ import {axiosClient} from '../utils/axiosClient';
 const SingleProduct = () => {
   const [product, setProduct] = React.useState({});
   const { id } = useParams();
-  console.log("Product", product);
 
   async function getSingleProduct(){
     try{

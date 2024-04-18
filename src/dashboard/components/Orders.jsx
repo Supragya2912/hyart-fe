@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { axiosClient } from '../../utils/axiosClient';
 
@@ -7,8 +6,7 @@ const Orders = () => {
     const [updateStatus, setUpdateStatus] = useState(false);
     const [status, setStatus] = useState('');
     const [orderIdToUpdate, setOrderIdToUpdate] = useState(null);
-
-    console.log(orders);
+    const [trackingIdToUpdate, setTrackingIdToUpdate] = useState(null);
 
     const ordersCount = orders.length;
 
@@ -26,13 +24,18 @@ const Orders = () => {
         getOrders();
     }, []);
 
-    const handleUpdateStatus = async (orderId, newStatus) => {
+    const handleUpdateStatus = async (orderId, newStatus, trackingId) => {
         try {
-            const response = await axiosClient.post('/api/admin/update-order-status', {
+            let payload = {
                 order_id: orderId,
                 status: newStatus
-            });
-            console.log(response);
+            };
+    
+            if (newStatus === "shipped" && trackingIdToUpdate) {
+                payload.trackingID = trackingIdToUpdate;
+            }
+    
+            const response = await axiosClient.post('/api/admin/update-order-status', payload);
             if (response.status === 'ok' && response.statusCode === 200) {
                 console.log("Order status updated successfully");
                 setStatus('');
@@ -46,7 +49,6 @@ const Orders = () => {
     };
 
     const handleCODPayment = async (orderId, status) => {
-
         try {
             const response = await axiosClient.post('/api/admin/delivered-cod', {
                 order_id: orderId,
@@ -67,8 +69,6 @@ const Orders = () => {
 
     const getOrderStatusColor = (status) => {
         switch (status.toLowerCase()) {
-            case "pending":
-                return "text-yellow-500";
             case "confirmed":
                 return "text-green-500";
             case "shipped":
@@ -81,9 +81,6 @@ const Orders = () => {
                 return "text-gray-500";
         }
     };
-
-
-    console.log("STATUS", status);
     
     return (
         <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
@@ -141,10 +138,13 @@ const Orders = () => {
                                     <th scope="col" className="px-16">
                                         Action
                                     </th>
+                                    <th scope="col" className="px-16">
+                                        Tracking ID
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders.map((order, index) => (
+                                {[...orders].reverse().map((order, index) => (
                                     <tr key={index} className="border-b dark:border-gray-600 dark:hover:bg-gray-700">
                                         <td className="px-4 py-3 font-medium text-gray-900 dark:text-white" >
                                             <div className="flex items-center mr-3">
@@ -244,6 +244,17 @@ const Orders = () => {
                                                 >
                                                     Update Status
                                                 </button>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {order?.status === 'confirmed' ? (
+                                                <input
+                                                    type="text"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                    onChange={(e) => setTrackingIdToUpdate(e.target.value)}
+                                                />
+                                            ) : (
+                                                <span>{order?.trackingId}</span>
                                             )}
                                         </td>
                                     </tr>

@@ -32,7 +32,7 @@ const Cart = () => {
   const [shippingCharge, setShippingCharge] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('online');
+  const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [getCoupon, setGetCoupon] = useState([]);
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -60,9 +60,14 @@ const Cart = () => {
 
   async function getAllCoupons(){
     try{
-        const response = await axiosClient.post('/api/hyart/list-coupons');
-        console.log(response.result);
-        setGetCoupon(response.result);
+      const response = await axiosClient.post('/api/hyart/list-coupons');
+      const currentDate = new Date();
+      const validCoupons = response?.result?.filter(coupon => {
+        const validFrom = new Date(coupon?.validFrom);
+        const validUntil = new Date(coupon?.validUntil);
+        return currentDate >= validFrom && currentDate <= validUntil;
+      });
+      setGetCoupon(validCoupons);
     }catch(error){
         console.log(error);
     }
@@ -91,7 +96,6 @@ const Cart = () => {
   }, [totalAmt]);
 
   const initPayment = (data) => {
-    console.log("STEP 4 --", data);
       const options = {
         key: "rzp_test_CU4HeFOSwXLSD1",
         amount: data.amount,
@@ -102,7 +106,6 @@ const Cart = () => {
         image: products.image,
         receipt: data.receipt,
         handler: async (response) => {
-          console.log("STEP 5 --", response);
           try {
             const verifyUrl = await axiosClient.post('/api/user/paymentVerification', {
               orderCreationId: data.id,
@@ -110,9 +113,9 @@ const Cart = () => {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               amount: data.amount,
-              receipt: data.receipt
+              receipt: data.receipt,
+              paymentMethod: paymentMethod
             });
-            console.log("STEP 6 --", verifyUrl);
             if (verifyUrl.status === 'ok') navigate('/payments/success');
             else navigate('/payments/failed');
           } catch (error) {
@@ -137,9 +140,6 @@ const Cart = () => {
           quantity: item.quantity,
         }))
       }
-      
-      console.log("COUPON APPLIED --", couponApplied);
-      console.log("COUPON CODE --", couponCode);
 
       if(couponApplied) {
         payload = {
@@ -150,7 +150,6 @@ const Cart = () => {
 
       const orderUrl = await axiosClient.post('/api/user/place-order', payload);
 
-      console.log("STEP 1 --", orderUrl);
       initPayment(orderUrl.result);
   
     }catch (error) {
@@ -328,9 +327,9 @@ const Cart = () => {
                           type="radio"
                           id="payOnline"
                           name="paymentMethod"
-                          value="online"
-                          checked={paymentMethod === 'online'}
-                          onChange={() => setPaymentMethod('online')}
+                          value="razorpay"
+                          checked={paymentMethod === 'razorpay'}
+                          onChange={() => setPaymentMethod('razorpay')}
                           className="relative float-left -ml-[1.5rem] mr-1 mt-0.5 h-5 w-5 appearance-none rounded-full border-2 border-solid border-neutral-300 before:pointer-events-none before:absolute before:h-4 before:w-4 before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] after:absolute after:z-[1] after:block after:h-4 after:w-4 after:rounded-full after:content-[''] checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:border-neutral-600 dark:checked:border-primary dark:checked:after:border-primary dark:checked:after:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:border-primary dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
                         />
                       <label 
@@ -361,7 +360,7 @@ const Cart = () => {
                   <button
                       type="button"
                       className="inline-block rounded-lg bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                      onClick={paymentMethod === 'online' ? handlePayment : () => setShowModal(true)}
+                      onClick={paymentMethod === 'razorpay' ? handlePayment : () => setShowModal(true)}
                     >
                       Proceed to Checkout
                   </button>
