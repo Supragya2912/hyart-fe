@@ -138,7 +138,7 @@ const Orders = () => {
                                     <th scope="col" className="px-16">
                                         Action
                                     </th>
-                                    <th scope="col" className="px-16">
+                                    <th scope="col" className="px-12">
                                         Tracking ID
                                     </th>
                                 </tr>
@@ -246,7 +246,7 @@ const Orders = () => {
                                                 </button>
                                             )}
                                         </td>
-                                        <td className="px-4 py-3">
+                                        <td className="pr-8">
                                             {order?.status === 'confirmed' ? (
                                                 <input
                                                     type="text"

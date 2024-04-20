@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { getItem, KEY_ACCESS_TOKEN, removeItem,setItem } from './localStorageManager';
-import {store} from '../redux/store';
+import { getItem, KEY_ACCESS_TOKEN, removeItem, setItem } from './localStorageManager';
+import { store } from '../redux/store';
 import { setLoading, showToast } from "../redux/slices/appConfigSlice";
 import { TOAST_FAILURE } from "../App";
 
@@ -9,7 +9,6 @@ let baseURL = process.env.REACT_APP_SERVER_BASE_URL;
 export const axiosClient = axios.create({
     baseURL,
     withCredentials: true,
-    mode:"cors",
 });
 
 axiosClient.interceptors.request.use((request) => {
@@ -39,7 +38,7 @@ axiosClient.interceptors.response.use(async (response) => {
             originalRequest._retry = true;
             const response = await axios.create({
                 withCredentials: true,
-            }).get(`${baseURL}auth/refresh`)
+            }).get(`${baseURL}/api/auth/refresh`)
 
             if(response.data.status === "ok"){
                 setItem(KEY_ACCESS_TOKEN, response.data.result.accessToken);

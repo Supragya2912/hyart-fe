@@ -12,7 +12,8 @@ const Product = (props) => {
   const _id = props.id;
   
   const handleProductDetails = () => {
-    navigate(`/product/${_id}`);
+    if(props.quantity > 0)
+      navigate(`/product/${_id}`);
   };
 
   const redirectToPayment = () => {

@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { resetCart } from "../../redux/slices/cartSlice";
 import ItemCard from "./ItemCard";
-import Logo from "../../assets/movix-logo.svg";
 import {axiosClient} from "../../utils/axiosClient";
 import {
   TERipple,
@@ -376,14 +375,7 @@ const Cart = () => {
           transition={{ duration: 0.4 }}
           className="flex flex-col mdl:flex-row justify-center items-center gap-4 pb-20"
         >
-          <div>
-            <img
-              className="w-80 rounded-lg p-4 mx-auto"
-              src={Logo}
-              alt="emptyCart"
-            />
-          </div>
-          <div className="max-w-[500px] p-4 py-8 bg-white flex gap-4 flex-col items-center rounded-md">
+          <div className="max-w-[500px] mt-20 p-4 py-8 bg-white flex gap-4 flex-col items-center rounded-md">
             <h1 className="font-titleFont text-xl">
               Your Cart feels lonely🥲
             </h1>
