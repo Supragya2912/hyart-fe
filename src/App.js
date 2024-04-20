@@ -36,6 +36,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Update from "./pages/Update";
 import Settings from "./pages/Settings";
 import MyOrders from "./pages/MyOrders";
+import Wishlist from "./pages/Wishlist";
 
 const Layout = () => {
   return (
@@ -107,6 +108,7 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
             <Route path="/settings" element={<Settings />}></Route>
             <Route path="/myorders" element={<MyOrders />}></Route>
+            <Route path="/wishlist" element={<Wishlist />}></Route>
             <Route path="*" element={<Error />} />
           </Route>
           <Route path="/admin/dashboard" element={<Dashboard />} >

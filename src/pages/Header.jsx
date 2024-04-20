@@ -98,6 +98,10 @@ const Header = () => {
       }
   }
 
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className="w-full h-20 bg-white sticky top-0 z-50 border-b-[1px] border-b-gray-200">
       <nav className="h-full px-4 max-w-container mx-auto relative">
@@ -206,15 +210,15 @@ const Header = () => {
                             </div>
                             <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                                 <li>
-                                    <Link to="/myorders" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My Orders</Link>
+                                    <Link to="/myorders" onClick={closeDropdown} className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My Orders</Link>
                                 </li>
                                 <li>
-                                    <Link to="/settings" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</Link>
+                                    <Link to="/settings" onClick={closeDropdown} className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</Link>
                                 </li>
                             </ul>
                             <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                                 <li>
-                                    <Link to="#" className="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <Link to="/wishlist" onClick={closeDropdown} className="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                         <svg className="mr-2 w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/></svg>
                                         My Wishlist
                                     </Link>
