@@ -256,8 +256,6 @@ const Cart = () => {
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <span className="text-md">Have a coupon?</span>
-                <span className="text-md">Apply it here</span>
                 {copySuccess && toast.success("Coupon code copied")}
               </div>
             </div>

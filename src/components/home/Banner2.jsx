@@ -1,17 +1,26 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Banner2 = () => {
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
-        <div className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">We didn't reinvent the wheel</h2>
-          <p className="mb-4">We are strategists, designers and developers. Innovators and problem solvers. Small enough to be simple and quick, but big enough to deliver the scope you want at the pace you need. Small enough to be simple and quick, but big enough to deliver the scope you want at the pace you need.</p>
-          <p>We are strategists, designers and developers. Innovators and problem solvers. Small enough to be simple and quick.</p>
-        </div>
-        <div className="grid grid-cols-2 gap-4 mt-8">
-          <img className="w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-2.png" alt="office content 1" />
-          <img className="mt-4 w-full lg:mt-10 rounded-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-1.png" alt="office content 2" />
+    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-32 flex items-center justify-center">
+      <div className="container px-4 md:px-6 text-center">
+        <div className="space-y-4">
+          <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+            Timeless Elegance, Crafted to Perfection
+          </h1>
+          <p className="max-w-[600px] mx-auto text-gray-500 md:text-xl dark:text-gray-400">
+            Discover our exquisite collection of handcrafted jewelry, designed to elevate your style and captivate
+            your senses.
+          </p>
+          <div className="flex justify-center">
+            <Link
+              className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+              to="/shop"
+            >
+              Shop Now
+            </Link>
+          </div>
         </div>
       </div>
     </section>

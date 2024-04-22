@@ -46,7 +46,13 @@ const NewArrivals = () => {
 
   return (
     <div className="w-full pb-16">
-      <div className="text-3xl font-semibold pb-6">New Arrivals</div>
+      <div className="space-y-2 text-center mb-10">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Explore Our Collections</h2>
+        <p className="max-w-[700px] mx-auto text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+          From classic elegance to modern sophistication, our jewellery collections offer something for every
+          style and occasion.
+        </p>
+      </div>
       <Slider {...settings}>
       {
         myProducts?.allProducts?.map((product, index) => (

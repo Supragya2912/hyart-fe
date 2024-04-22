@@ -6,6 +6,23 @@ import Address from "./Address";
 import { TEInput } from "tw-elements-react";
 import { toast } from "react-toastify";
 
+function Label({ htmlFor, children }) {
+  return <label htmlFor={htmlFor}>{children}</label>;
+}
+
+function Input({ defaultValue, disabled, id, placeholder, type }) {
+  return (
+    <input
+      defaultValue={defaultValue}
+      disabled={disabled}
+      id={id}
+      placeholder={placeholder}
+      type={type}
+      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+    />
+  );
+}
+
 const Settings = () => {
   const [userImg, setUserImg] = useState('');
   const [oldPassword, setOldPassword] = useState('');
@@ -66,18 +83,22 @@ const Settings = () => {
               </button>
           </div>
         </div>
-        <div className="flex justify-center items-start mt-28 gap-10">
-          <div className="flex flex-col mt-4">
-            <label className="text-lg font-bold">Full Name</label>
-            <input type="text" className="input" value={myProfile?.name} disabled />
-          </div>
-          <div className="flex flex-col mt-4">
-            <label className="text-lg font-bold">Email</label>
-            <input type="text" className="input" value={myProfile?.email} disabled />
-          </div>
-          <div className="flex flex-col mt-4">
-            <label className="text-lg font-bold">Phone</label>
-            <input type="text" className="input" value={myProfile?.phoneNumber} disabled />
+        <div className="flex flex-col items-center justify-center p-6 space-y-8 bg-white rounded-lg max-w-4xl mx-auto mt-24">
+          <div className="w-full">
+            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+              <div className="flex-1">
+                <Label htmlFor="full-name">Full Name</Label>
+                <Input defaultValue={myProfile?.name} disabled id="full-name" placeholder="Full Name" />
+              </div>
+              <div className="flex-1">
+                <Label htmlFor="email">Email</Label>
+                <Input defaultValue={myProfile?.email} disabled id="email" placeholder="Email" type="email" />
+              </div>
+              <div className="flex-1">
+                <Label htmlFor="phone">Phone</Label>
+                <Input defaultValue={myProfile?.phoneNumber} disabled id="phone" placeholder="Phone" type="tel" />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -118,7 +139,7 @@ const Settings = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 mt-10">
+      <div className="grid grid-cols-1">
         <Address />
       </div>
     </>

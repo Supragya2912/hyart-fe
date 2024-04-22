@@ -58,7 +58,12 @@ const BestSellers = () => {
 
   return (
     <div className="w-full pb-20">
-      <div className="text-3xl font-semibold pb-6">Our BestSellers</div>
+      <div className="space-y-2 text-center mb-10">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Featured Products</h2>
+        <p className="max-w-[700px] mx-auto text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+          Discover our most popular and newest jewellery items, handpicked for their exceptional quality and design.
+        </p>
+      </div>
       <Slider {...settings}>
       {
         getProduct?.map((product, index) => (

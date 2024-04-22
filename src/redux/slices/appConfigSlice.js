@@ -4,7 +4,6 @@ import { axiosClient } from "../../utils/axiosClient";
 export const getMyProfile = createAsyncThunk("user/getMyProfile", async () => {
     try{
         const response = await axiosClient.get('/api/auth/get-profile')
-        console.log(response);
         return response.result;
     }catch(e){
         return Promise.reject(e);

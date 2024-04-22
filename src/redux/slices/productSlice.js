@@ -4,7 +4,6 @@ import { axiosClient } from "../../utils/axiosClient";
 export const getAllProducts = createAsyncThunk("user/getAllProducts", async () => {
     try{
         const response = await axiosClient.post('/api/hyart/all-products')
-        console.log("Product", response);
         return response.result;
     }catch(e){
         return Promise.reject(e);
@@ -14,7 +13,6 @@ export const getAllProducts = createAsyncThunk("user/getAllProducts", async () =
 export const getAllCategory = createAsyncThunk("user/getAllCategory", async () => {
     try{
         const response = await axiosClient.post('/api/hyart/all-category')
-        console.log("category",response);
         return response.result;
     }catch(e){
         return Promise.reject(e);
