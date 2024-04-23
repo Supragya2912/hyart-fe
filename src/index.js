@@ -7,15 +7,15 @@ import { store, persistor } from "./redux/store";
 import "./index.css";
 import App from "./App";
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
-import { BrowserRouter } from "react-router-dom";
+import {  HashRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <App />
       </PersistGate>
     </Provider>
-  </BrowserRouter>
+  </HashRouter>
 );
