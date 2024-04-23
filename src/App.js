@@ -69,6 +69,7 @@ function App() {
   const loadingRef = useRef(null);
   const isLoading = useSelector((state) => state.appConfigReducer.isLoading);
   const toastData = useSelector((state) => state.appConfigReducer.toastData);
+  const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
   useEffect(() => {
     if(isLoading)
@@ -111,13 +112,15 @@ function App() {
             <Route path="/wishlist" element={<Wishlist />}></Route>
             <Route path="*" element={<Error />} />
           </Route>
-          <Route path="/admin/dashboard" element={<Dashboard />} >
-              <Route path="products" element={<Products />} />
-              <Route path="customers" element={<Customers />} />
-              <Route path="categories" element={<Categories />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="coupons" element={<Coupons />} />
-          </Route>
+          {myProfile?.role === "admin" && (
+              <Route path="/admin/dashboard" element={<Dashboard />} >
+                <Route path="products" element={<Products />} />
+                <Route path="customers" element={<Customers />} />
+                <Route path="categories" element={<Categories />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="coupons" element={<Coupons />} />
+              </Route>
+          )}
       </Route>
       <Route element={<RequireLogin/>}>
           <Route path="/otp" element={<Otp/>}></Route>

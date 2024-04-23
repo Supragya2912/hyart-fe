@@ -2,9 +2,9 @@ import React from 'react'
 
 const PrivacyPolicy = () => {
   return (
-        <div className="max-w-container mx-auto px-4">
+        <div className="max-w-container mx-auto px-6">
             <div className="pb-10">
-            <h1 className="px-20 mt-10 text-base text-lightText mb-2">
+            <h1 className="lg:px-20 mt-10 text-base text-lightText mb-2">
                 <p>
                     This privacy policy sets out how VANT uses and protects any information that you give VANT when you use this website. VANT is committed to ensuring that your privacy is protected. Should we ask you to provide certain information by which you can be identified when using this website, then you can be assured that it will only be used in accordance with this privacy statement. VANT may change this policy from time to time by updating this page. You should check this page from time to time to ensure that you are happy with any changes.
                 </p>

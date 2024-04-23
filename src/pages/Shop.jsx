@@ -29,8 +29,8 @@ const Shop = () => {
   const filteredCategories = categories.filter(category => category.products.length > 0);
   
   return (
-    <div className="grid grid-cols-4 gap-4">
-      <div className="col-span-1 p-5">
+    <div className="grid lg:grid-cols-4 gap-4">
+      <div className="col-span-3 lg:col-span-1 p-5">
         {filteredCategories.map((category, index) => (
           <div key={index} className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
             <input

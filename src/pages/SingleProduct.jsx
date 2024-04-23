@@ -26,7 +26,7 @@ const SingleProduct = () => {
     <section className="py-8 bg-white md:py-16 xl:py-24 dark:bg-gray-900 antialiased">
       <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
-          <div className="w-[400px] h-[400px] mx-auto">
+          <div className="w-[330px] lg:w-[400px] ;g:h-[400px] mx-auto">
             <img className="w-full h-full cursor-pointer object-cover" src={product?.image?.url} alt="" />
           </div>
 

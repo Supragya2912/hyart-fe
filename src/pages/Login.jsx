@@ -62,7 +62,7 @@ const Login = () => {
                 Login
               </button>
               <div className="flex gap-16 text-sm font-light text-gray-500 dark:text-gray-400">
-                <div className='flex gap-1'>
+                <div className='flex sm:flex-col lg:flex-row gap-1'>
                   <p>Don’t have an account yet? </p>
                   <Link to="/otp"><p className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</p></Link> 
                 </div>

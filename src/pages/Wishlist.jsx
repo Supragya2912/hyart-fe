@@ -1,6 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { axiosClient } from '../utils/axiosClient'
 
 const Wishlist = () => {
+  const [wishlist, setWishlist] = useState([]);
+
+  async function getWishlist() {
+    try {
+      const response = await axiosClient.post(`/api/user/get-wishlist`);
+      setWishlist(response.result);
+      console.log("jjjjj", response.result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getWishlist();
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <h1 className="text-3xl font-bold mb-10">My Wishlist</h1>

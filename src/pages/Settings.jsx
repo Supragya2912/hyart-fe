@@ -66,7 +66,7 @@ const Settings = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1">
+      <div className="grid grid-cols-1 overflow-x-hidden">
         <div className="flex justify-center items-center">
           <div className="w-32 h-32 cursor-pointer rounded-full">
               <label htmlFor="inputImg" className="labelImg">

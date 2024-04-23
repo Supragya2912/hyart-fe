@@ -2,9 +2,9 @@ import React from 'react'
 
 const TermsConditions = () => {
   return (
-    <div className="max-w-container mx-auto px-4">
+    <div className="max-w-container mx-auto px-6">
         <div className="pb-10">
-        <h1 className="px-20 mt-10 text-base text-lightText mb-2">
+        <h1 className="lg:px-20 mt-10 text-base text-lightText mb-2">
             <p>
                 This website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.
             </p>
@@ -52,11 +52,19 @@ const TermsConditions = () => {
             <h2>3. MODIFICATIONS TO THE SERVICE AND PRICES</h2>
             <br/>
             <p>
-                Prices for our products are subject to change without notice. <br/>
-                We reserve the right at any time to modify or discontinue the Service (or any part or content thereof) without notice at any time. <br/>
-                We shall not be liable to you or to any third-party for any modification, price change, suspension or discontinuance of the Service. <br/>
-                We have made every effort to display as accurately as possible the colors and images of our products that appear at the store. We cannot guarantee that your computer monitor’s display of any color will be accurate. <br/>
+                Prices for our products are subject to change without notice. <br/> <br/>
+                We reserve the right at any time to modify or discontinue the Service (or any part or content thereof) without notice at any time. <br/> <br/>
+                We shall not be liable to you or to any third-party for any modification, price change, suspension or discontinuance of the Service. <br/> <br/>
+                We have made every effort to display as accurately as possible the colors and images of our products that appear at the store. We cannot guarantee that your computer monitor’s display of any color will be accurate. <br/> <br/>
             </p>
+            <br/>
+            <h2>4. MODIFICATIONS OF TERMS AND CONDITIONS</h2>
+            <br/>
+            <p>We reserves the right at any time to modify these Terms and Conditions at any time without any prior notification to you. You can access the latest version of the Terms and Conditions at any given time on the Website. You should regularly view the Terms and Conditions In the event the modified Terms and Conditions are not acceptable to you, you may choose not to visit or use the Website. However, if you continue to access, view or use our service of the Website, you shall be deemed to have agreed and accepted to the modified Terms and Conditions and you undertake to abide by the modified Terms and Conditions.</p>
+            <br/>
+            <h2>5. PRIVACY POLICY</h2>
+            <br/>
+            <p>Please see our Privacy Policy for information regarding how your information is used, collected, stored, and disclosed.</p>
         </h1>
         </div>
     </div>

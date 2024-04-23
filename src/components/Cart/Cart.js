@@ -203,24 +203,28 @@ const Cart = () => {
           </button>
 
           <div className="flex flex-col mdl:flex-row justify-between border py-4 px-4 items-center gap-2 mdl:gap-0">
-            <div className="flex items-center gap-4">
-              <TEInput
+            <div className="flex flex-col lg:flex-row items-center gap-4">
+              <div>
+                <TEInput
                     type="text"
                     label="Coupon Code"
                     size="md"
                     id='couponCode'
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
-              ></TEInput>
-              <button
-                type="button"
-                className="inline-block rounded bg-neutral-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
-                onClick={
-                  handleCoupon
-              }
-              >
-                Apply Coupon
-              </button>
+                ></TEInput>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="inline-block rounded bg-neutral-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
+                  onClick={
+                    handleCoupon
+                }
+                >
+                  Apply Coupon
+                </button>
+              </div>
               <TEDropdown className="flex justify-center">
                 <TERipple rippleColor="light">
                   <TEDropdownToggle className="flex items-center whitespace-nowrap rounded bg-primary px-4 py-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
@@ -241,7 +245,12 @@ const Cart = () => {
                   </TEDropdownToggle>
                 </TERipple>
                 <TEDropdownMenu>
-                  {getCoupon.map((coupon, index) => (
+                {getCoupon.length === 0 ? (
+                  <div className="px-4 py-2 text-sm text-neutral-700">
+                    No coupons available
+                  </div>
+                ) : (
+                  getCoupon.map((coupon, index) => (
                     <TEDropdownItem key={index}>
                       <p
                         className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
@@ -250,7 +259,8 @@ const Cart = () => {
                         {coupon?.code}
                       </p>
                     </TEDropdownItem>
-                  ))}
+                  ))
+                )}
                 </TEDropdownMenu>
               </TEDropdown>
             </div>
@@ -261,7 +271,7 @@ const Cart = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 p-8">
             <div className="mt-4">
               <h1 className="mb-5 text-2xl font-semibold">Shipping Address</h1>
               <div>

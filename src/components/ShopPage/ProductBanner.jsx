@@ -11,7 +11,7 @@ const ProductBanner = (props) => {
   });
 
   return (
-    <div className='grid grid-cols-3 gap-2 p-4'>
+    <div className='grid lg:grid-cols-3 gap-2 p-4'>
       {
         myProducts?.map((product, index) => (
           <div key={index} className='w-full'>

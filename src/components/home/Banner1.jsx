@@ -182,12 +182,14 @@ const Banner1 = () => {
   ];
 
   return (
-    <div className="w-full bg-white">
-      <Slider {...settings}>
-        {slides.map((slide, index) => (
-          <CustomSlide key={index} {...slide} />
-        ))}
-      </Slider>
+    <div className="lg:block hidden">
+      <div className="w-full bg-white">
+        <Slider {...settings}>
+          {slides.map((slide, index) => (
+            <CustomSlide key={index} {...slide} />
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 };
