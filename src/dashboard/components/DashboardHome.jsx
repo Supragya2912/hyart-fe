@@ -165,7 +165,7 @@ const DashboardHome = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Total Earnings</p>
-                <p className="text-lg font-semibold dark:text-gray-200">Rs {earnings?.totalEarnings.toFixed(2) * 100}</p>
+                <p className="text-lg font-semibold dark:text-gray-200">Rs {earnings?.totalEarnings.toFixed(2)}</p>
               </div>
             </div>
           </div>
