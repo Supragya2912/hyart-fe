@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
 import {axiosClient} from '../../utils/axiosClient';
+import { toast } from "react-toastify";
 
 const Product = (props) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Product = (props) => {
   async function addToWishlist(productId) {
     try {
       await axiosClient.post(`/api/user/add-to-wishlist`, { product_id: productId });
+      toast.success('Product added to wishlist');
     } catch (error) {
       console.log(error);
     }

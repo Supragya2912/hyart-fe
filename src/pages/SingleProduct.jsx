@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import {axiosClient} from '../utils/axiosClient';
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/slices/cartSlice";
+import { toast } from "react-toastify";
 
 const SingleProduct = () => {
   const [product, setProduct] = React.useState({});
@@ -23,6 +24,7 @@ const SingleProduct = () => {
   async function addToWishlist(productId) {
     try {
       await axiosClient.post(`/api/user/add-to-wishlist`, { product_id: productId });
+      toast.success('Product added to wishlist');
     } catch (error) {
       console.log(error);
     }

@@ -75,6 +75,7 @@ const BestSellers = () => {
                 productName={product.name}
                 price={product.price}
                 des={product.description}
+                quantity={product.quantity}
               />
             </div>
           </div>
