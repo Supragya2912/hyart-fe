@@ -10,7 +10,7 @@ const Banner2 = () => {
             Timeless Elegance, Crafted to Perfection
           </h1>
           <p className="max-w-[600px] mx-auto text-gray-500 md:text-xl dark:text-gray-400">
-            Discover our exquisite collection of handcrafted jewelry, designed to elevate your style and captivate
+            Discover our exquisite collection of handcrafted jewellery, designed to elevate your style and captivate
             your senses.
           </p>
           <div className="flex justify-center">

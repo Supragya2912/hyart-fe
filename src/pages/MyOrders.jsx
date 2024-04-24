@@ -63,7 +63,12 @@ const MyOrders = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(order?.createdAt).toLocaleDateString()}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-medium text-gray-500">Rs {order?.totalAmount}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.status === 'confirmed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'}`}>
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    order.status === 'confirmed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' :
+                    order.status === 'shipped' ? 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400' :
+                    order.status === 'delivered' ? 'bg-purple-100 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400' :
+                    order.status === 'cancelled' ? 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400' :
+                    ''}`}>
                     {order?.status.charAt(0).toUpperCase() + order?.status.slice(1)}
                   </span>
                 </td>

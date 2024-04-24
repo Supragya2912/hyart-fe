@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {axiosClient} from '../utils/axiosClient';
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/slices/cartSlice";
 
 const SingleProduct = () => {
   const [product, setProduct] = React.useState({});
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   async function getSingleProduct(){
     try{
@@ -17,10 +20,32 @@ const SingleProduct = () => {
     }
   }
 
+  async function addToWishlist(productId) {
+    try {
+      await axiosClient.post(`/api/user/add-to-wishlist`, { product_id: productId });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getSingleProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({
+      _id: product._id,
+      name: product.name,
+      quantity: 1,
+      image: product.image.url,
+      price: product.price,
+    }));
+  };
+
+  const handleAddToWishlist = () => {
+    addToWishlist(product._id);
+  }
 
   return (
     <section className="py-8 bg-white md:py-16 xl:py-24 dark:bg-gray-900 antialiased">
@@ -30,68 +55,36 @@ const SingleProduct = () => {
             <img className="w-full h-full cursor-pointer object-cover" src={product?.image?.url} alt="" />
           </div>
 
-          <div className="mt-6 sm:mt-8 lg:mt-0">
-            <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+          <div className="mt-4 sm:mt-8 lg:mt-0">
+            <h1 className="text-3xl font-semibold mb-4">
               {product?.name}
             </h1>
             <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
-              <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
+              <p className="text-2xl text-gray-600 font-bold mb-3">
                 Rs. {product?.price}
               </p>
             </div>
 
-            <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-              <Link
-                to="#"
-                title=""
-                className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                role="button"
-              >
-                <svg
-                  className="w-5 h-5 -ms-2 me-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-                  />
-                </svg>
-                Add to wishlist
-              </Link>
+            <div className='flex gap-2'>
+              <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                  <button
+                    type="button"
+                    className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
+                    onClick={handleAddToWishlist}
+                  >
+                    Add to Wishlist
+                  </button>
+              </div>
 
-              <Link
-                to="#"
-                title=""
-                className="text-white sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
-                role="button"
-              >
-                <svg
-                  className="w-5 h-5 -ms-2 me-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
+              <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                <button
+                  type="button"
+                  className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                  onClick={handleAddToCart}
                 >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
-                  />
-                </svg>
-                Add to cart
-              </Link>
+                  Add to Cart
+                </button>
+              </div>
             </div>
 
             <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />

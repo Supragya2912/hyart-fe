@@ -6,27 +6,27 @@ const PrivacyPolicy = () => {
             <div className="pb-10">
             <h1 className="lg:px-20 mt-10 text-base text-lightText mb-2">
                 <p>
-                    This privacy policy sets out how VANT uses and protects any information that you give VANT when you use this website. VANT is committed to ensuring that your privacy is protected. Should we ask you to provide certain information by which you can be identified when using this website, then you can be assured that it will only be used in accordance with this privacy statement. VANT may change this policy from time to time by updating this page. You should check this page from time to time to ensure that you are happy with any changes.
+                   This Privacy Policy is intended to inform you about the personal data that is collected from you, how your personal data may be used and disclosed, how you can control the use of your personal data, and how your personal data is protected when you use our application. We do not sell trade your personally identifiable information; however, we may share the same with third parties who assist us in conducting our business, operating our website/Application, or servicing you, so long as those parties agree to keep this information confidential. You should check this page from time to time to ensure that you are happy with any changes.
                 </p>
                 <br/>
                 <h2>WHAT WE COLLECT</h2>
+                <br/>
                 <p>We may collect the following information:</p>
                 <ul>
-                    <li>Name</li>
-                    <li>Contact information including email address</li>
-                    <li>Demographic information such as postcode, preferences and interests</li>
-                    <li>Other information relevant to customer surveys and/or offers</li>
+                    <li>a) Name</li>
+                    <li>b) Contact information including email address and phone number</li>
+                    <li>c) Demographic information such as postcode, preferences and interests</li>
+                    <li>d) Other information relevant to customer surveys and/or offers</li>
                 </ul>
                 <br/>
-                <p>For the exhaustive list of cookies we collect see the List of cookies we collect section.</p>
-                <br/>
                 <h2>WHAT WE DO WITH THE INFORMATION WE GATHER</h2>
+                <br/>
                 <p>We require this information to understand your needs and provide you with a better service, and in particular for the following reasons:</p>
                 <ul>
-                    <li>Internal record keeping.</li>
-                    <li>We may use the information to improve our products and services.</li>
-                    <li>We may periodically send promotional emails about new products, special offers or other information which we think you may find interesting using the email address which you have provided.</li>
-                    <li>From time to time, we may also use your information to contact you for market research purposes. We may contact you by email, phone, fax or mail. We may use the information to customise the website according to your interests.</li>
+                    <li>a) Internal record keeping.</li>
+                    <li>b) We may use the information to improve our products and services.</li>
+                    <li>c) We may periodically send promotional emails about new products, special offers or other information which we think you may find interesting using the email address which you have provided.</li>
+                    <li>d) From time to time, we may also use your information to contact you for market research purposes. We may contact you by email, phone, fax or mail. We may use the information to customise the website according to your interests.</li>
                 </ul>
                 <br/>
                 <h2>SECURITY</h2>
@@ -51,96 +51,9 @@ const PrivacyPolicy = () => {
                 <br/>
                 <p>We will not sell, distribute or lease your personal information to third parties unless we have your permission or are required by law to do so. We may use your personal information to send you promotional information about third parties which we think you may find interesting if you tell us that you wish this to happen.</p>
                 <br/>
-                <h2>LIST OF COOKIES WE COLLECT</h2>
-                <br/>    
-                <p>The table below lists the cookies we collect and what information they store.</p>
+                <h2>CHANGES TO THE PRIVACY POLICY</h2>
                 <br/>
-                <table>
-                    <tr>
-                        <th>COOKIE NAME</th>
-                        <th>COOKIE DESCRIPTION</th>
-                    </tr>
-                    <tr>
-                        <td>cart</td>
-                        <td>The association with your shopping cart.</td>
-                    </tr>
-                    <tr>
-                        <td>category_info</td>
-                        <td>Stores the category info on the page, that allows to display pages more quickly.</td>
-                    </tr>
-                    <tr>
-                        <td>compare</td>
-                        <td>The items that you have in the Compare Products list.</td>
-                    </tr>
-                    <tr>
-                        <td>currency</td>
-                        <td>Your preferred currency</td>
-                    </tr>
-                    <tr>
-                        <td>customer</td>
-                        <td>An encrypted version of your customer id with the store.</td>
-                    </tr>
-                    <tr>
-                        <td>customer_auth</td>
-                        <td>An indicator if you are currently logged into the store.</td>
-                    </tr>
-                    <tr>
-                        <td>customer_info</td>
-                        <td>An encrypted version of the customer group you belong to.</td>
-                    </tr>
-                    <tr>
-                        <td>customer_segment_ids</td>
-                        <td>Stores the Customer Segment ID</td>
-                    </tr>
-                    <tr>
-                        <td>external_no_cache</td>
-                        <td>A flag, which indicates whether caching is disabled or not.</td>
-                    </tr>
-                    <tr>
-                        <td>frontend</td>
-                        <td>Your session ID on the server.</td>
-                    </tr>
-                    <tr>
-                        <td>guest-view</td>
-                        <td>Allows guests to edit their orders.</td>
-                    </tr>
-                    <tr>
-                        <td>last_category</td>
-                        <td>The last category you visited.</td>
-                    </tr>
-                    <tr>
-                        <td>last_product</td>
-                        <td>The most recent product you have viewed.</td>
-                    </tr>
-                    <tr>
-                        <td>newmessage</td>
-                        <td>Indicates whether a new message has been received.</td>
-                    </tr>
-                    <tr>
-                        <td>no_cache</td>
-                        <td>Indicates whether it is allowed to use cache.</td>
-                    </tr>
-                    <tr>
-                        <td>PERSISTENT_SHOPPING_CART</td>
-                        <td>A link to information about your cart and viewing history if you have asked the site.</td>
-                    </tr>
-                    <tr>
-                        <td>USER_ALLOWED_SAVE_COOKIE</td>
-                        <td>Indicates whether a customer allowed to use cookies.</td>
-                    </tr>
-                    <tr>
-                        <td>VIEWED_PRODUCT_IDS</td>
-                        <td>The products that you have recently viewed.</td>
-                    </tr>
-                    <tr>
-                        <td>WISHLIST</td>
-                        <td>An encrypted list of products added to your Wishlist.</td>
-                    </tr>
-                    <tr>
-                        <td>WISHLIST_CNT</td>
-                        <td>The number of items in your Wishlist.</td>
-                    </tr>
-                </table>            
+                <p>We may update this Privacy Policy at any time to reflect changes in our practices and service offerings. If we modify this Privacy Policy, we will update the date on which the new Privacy Policy will be effective. We will notify you of any material changes in the way we treat your information by placing a prominent notice on our website/Application.</p>      
             </h1>
             </div>
         </div>

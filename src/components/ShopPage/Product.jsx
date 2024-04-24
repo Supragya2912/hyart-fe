@@ -5,6 +5,7 @@ import { MdOutlineLabelImportant } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
+import {axiosClient} from '../../utils/axiosClient';
 
 const Product = (props) => {
   const dispatch = useDispatch();
@@ -15,6 +16,14 @@ const Product = (props) => {
     if(props.quantity > 0)
       navigate(`/product/${_id}`);
   };
+
+  async function addToWishlist(productId) {
+    try {
+      await axiosClient.post(`/api/user/add-to-wishlist`, { product_id: productId });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const redirectToPayment = () => {
     dispatch(
@@ -27,6 +36,10 @@ const Product = (props) => {
       })
     );
     navigate('/cart');
+  }
+
+  const handleAddToWishlist = () => {
+    addToWishlist(props.id);
   }
 
   return (
@@ -67,7 +80,7 @@ const Product = (props) => {
                     <MdOutlineLabelImportant />
                   </span>
                 </li>
-                <li className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full">
+                <li onClick={handleAddToWishlist} className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full">
                   Add to Wish List
                   <span>
                     <BsSuitHeartFill />
