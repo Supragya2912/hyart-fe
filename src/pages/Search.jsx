@@ -16,7 +16,6 @@ const Search = () => {
   async function searchProducts(query) {
     try {
       const response = await axiosClient.post(`/api/hyart/search-product`, { query });
-      console.log(response);
       setSearchResults(response.result);
     } catch (error) {
       console.log(error);

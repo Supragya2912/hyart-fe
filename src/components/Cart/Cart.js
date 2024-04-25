@@ -187,6 +187,16 @@ const Cart = () => {
       {products.length > 0 ? (
         <div className="pb-20">
           <div className="mt-5">
+            <div className="grid grid-cols-5 mb-4 border py-2 font-bold">
+              <div className="col-span-5 md:col-span-2 flex items-center gap-4 ml-4">
+                <span>Product Name</span>
+              </div>
+              <div className="col-span-5 md:col-span-3 flex items-center justify-between py-4 md:py-0 px-4 md:px-0 gap-6 md:gap-0">
+                <div className="w-1/3">Price</div>
+                <div className="w-1/3">Quantity</div>
+                <div className="w-1/3">Subtotal</div>
+              </div>
+            </div>
             {products.map((item) => (
               <div key={item._id}>
                 <ItemCard item={item} />

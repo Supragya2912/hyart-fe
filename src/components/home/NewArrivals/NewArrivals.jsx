@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 
 const NewArrivals = () => {
   const myProducts = useSelector((state) =>state.productReducer.myProducts);
-  console.log("yoyo", myProducts)
 
   const settings = {
     infinite: true,

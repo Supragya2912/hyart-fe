@@ -20,19 +20,15 @@ export const getAllCategory = createAsyncThunk("user/getAllCategory", async () =
 });
 
 const productSlice = createSlice({
-    name: 'appConfigSlice',
+    name: 'productSlice',
     initialState: {
         isLoading: false,
-        toastData: {},
         myProducts: [],
         category: [],
     },
     reducers: {
         setLoading: (state, action) => {
             state.isLoading = action.payload;
-        },
-        showToast: (state, action) => {
-            state.toastData = action.payload;
         }
     },
     extraReducers: (builder) => {

@@ -9,7 +9,6 @@ const Customers = () => {
   async function getAllUsers(){
     try{
         const response = await axiosClient.post('/api/admin/get-users');
-        console.log(response.result);
         setGetUsers(response.result);
     }catch(error){
         console.log(error);

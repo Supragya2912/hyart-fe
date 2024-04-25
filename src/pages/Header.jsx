@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { MdClose } from "react-icons/md";
 import { motion } from "framer-motion";
-import Flex from "../components/Layouts/Flex";
 import Logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
 import { RiShoppingCart2Line } from "react-icons/ri";
@@ -38,15 +36,13 @@ const navBarList = [
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showMenu, setShowMenu] = useState(true);
-  const [sidenav, setSidenav] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const products = useSelector((state) => state.cartReducer.products);
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(window.innerWidth >= 667);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
-  console.log(myProfile);
 
   const dropdownRef = useRef(null);
 
@@ -84,10 +80,6 @@ const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
   async function handleLogoutClicked() {
     try {
         await axiosClient.post('/api/auth/logout');
@@ -103,78 +95,40 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full h-20 bg-white sticky top-0 z-50 border-b-[1px] border-b-gray-200">
+    <div className="w-full h-20 bg-white sticky top-0 z-50 border-b-[1px] border-b-gray-200 overflow-x-scroll">
       <nav className="h-full px-4 max-w-container mx-auto relative">
-        <Flex className="flex items-center justify-between h-full">
+        <div className="flex items-center justify-between h-full">
           <Link to="/">
             <div>
-              <img className="w-32 object-cover" src={Logo} alt="logo"/>
+              <img className="w-32 object-cover hidden lg:block" src={Logo} alt="logo"/>
             </div>
           </Link>
-          <div>
-            {showMenu && (
-              <motion.ul
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="flex items-center w-auto z-50 p-0 gap-2"
-              >
-                <>
-                  {navBarList.map(({ _id, title, link }) => (
-                    <NavLink
-                      key={_id}
-                      className="flex font-normal hover:font-bold w-20 h-6 justify-center items-center px-12 text-base text-[#767676] hover:underline underline-offset-[4px] decoration-[1px] hover:text-[#262626]"
-                      to={link}
-                      state={{ data: location.pathname.split("/")[1] }}
-                    >
-                      <li>{title}</li>
-                    </NavLink>
-                  ))}
-                </>
-              </motion.ul>
-            )}
-            {sidenav && (
-              <div className="fixed top-0 left-0 w-full h-screen bg-black text-gray-200 bg-opacity-80 z-50">
-                <motion.div
-                  initial={{ x: -300, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="w-[80%] h-full relative"
-                >
-                  <div className="w-full h-full bg-primeColor p-6">
-                    <img
-                      className="w-28 mb-6"
-                      src={Logo}
-                      alt="logoLight"
-                    />
-                    <ul className="text-gray-200 flex flex-col gap-2">
-                      {navBarList.map((item) => (
-                        <li
-                          className="font-normal hover:font-bold items-center text-lg text-gray-200 hover:underline underline-offset-[4px] decoration-[1px] hover:text-white md:border-r-[2px] border-r-gray-300 hoverEffect last:border-r-0"
-                          key={item._id}
-                        >
-                          <NavLink
-                            to={item.link}
-                            state={{ data: location.pathname.split("/")[1] }}
-                            onClick={() => setSidenav(false)}
-                          >
-                            {item.title}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <span
-                    onClick={() => setSidenav(false)}
-                    className="w-8 h-8 border-[1px] border-gray-300 absolute top-2 -right-10 text-gray-300 text-2xl flex justify-center items-center cursor-pointer hover:border-red-500 hover:text-red-500 duration-300"
-                  >
-                    <MdClose />
-                  </span>
-                </motion.div>
-              </div>
-            )}
+          <div className="lg:hidden">
+            <button onClick={() => setShowMenu(!showMenu)} className="block text-gray-600 focus:outline-none">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
-
+          {showMenu && (
+            <motion.ul
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center w-auto z-50 p-0 gap-2 lg:flex"
+            >
+              {navBarList.map(({ _id, title, link }) => (
+                <NavLink
+                  key={_id}
+                  className="flex font-normal hover:font-bold w-20 h-6 justify-center items-center px-12 text-base text-[#767676] hover:underline underline-offset-[4px] decoration-[1px] hover:text-[#262626]"
+                  to={link}
+                  state={{ data: location.pathname.split("/")[1] }}
+                >
+                  <li>{title}</li>
+                </NavLink>
+              ))}
+            </motion.ul>
+          )}
           <div className="flex mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
               {!loading ? (
                 myProfile ? (
@@ -192,7 +146,7 @@ const Header = () => {
                           className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-100"
                           id="user-menu-button"
                           aria-expanded={isOpen}
-                          onClick={toggleDropdown}
+                          onClick={() => setIsOpen(!isOpen)}
                       >
                         <div className="w-[40px] h-[40px] rounded-full">
                           <img
@@ -261,7 +215,7 @@ const Header = () => {
                 </div>
               </Link>
           </div>
-        </Flex>
+        </div>
       </nav>
     </div>
   );

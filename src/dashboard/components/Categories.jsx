@@ -15,7 +15,6 @@ const Categories = () => {
   async function getAllCategories(){
     try{
         const response = await axiosClient.post('/api/hyart/all-category');
-        console.log(response.result);
         setGetCategory(response.result);
     }catch(error){
         console.log(error);
@@ -75,7 +74,8 @@ const Categories = () => {
     setShowAddModal(!showAddModal);
   };
 
-  const toggleEditModal = () => {
+  const toggleEditModal = (categoryName) => {
+    setCategoryName(categoryName);
     setShowEditModal(!showEditModal);
   };
 
@@ -147,7 +147,7 @@ const Categories = () => {
                                             className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                             onClick={() => {
                                                 setEditCategoryId(category?._id);
-                                                toggleEditModal();
+                                                toggleEditModal(category?.name);
                                             }}
                                         >
                                             <svg
@@ -307,6 +307,7 @@ const Categories = () => {
                                 type="text"
                                 name="name"
                                 id="name"
+                                value={categoryName}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 required
                                 onChange={(e) => setCategoryName(e.target.value)}

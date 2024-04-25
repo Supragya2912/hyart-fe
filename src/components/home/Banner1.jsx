@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import Jewellery1 from "../../assets/jewellery1.png";
-import Jewellery2 from "../../assets/jewellery1.png";
-import Jewellery3 from "../../assets/jewellery1.png";
+import Banner_img1 from "../../assets/jewellery1.png";
+import Banner_img2 from "../../assets/jewellery1.png";
+import Banner_img3 from "../../assets/jewellery1.png";
 
 const CustomSlide = ({ Subtext, imgSrc, text, buttonText }) => (
   <div
     style={{
       position: "relative",
-      backgroundColor: "#F5F5F3", 
+      backgroundColor: "#F6f6f6", 
       display: "flex",
       justifyContent: "center",
       alignItems: "center", 
@@ -42,7 +42,7 @@ const CustomSlide = ({ Subtext, imgSrc, text, buttonText }) => (
         {Subtext}
       </p>
 
-      <Link to="/about">
+      <Link to="/shop">
         <button
             type="button"
             className="mb-6 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
@@ -156,26 +156,26 @@ const Banner1 = () => {
 
   const slides = [
     {
-      imgSrc: Jewellery1,
-      text: "Stylish beautiful diamond earrings",
+      imgSrc: Banner_img1,
+      text: "Discover Our Exquisite Jewellery Collection",
       Subtext:
-        "Discover our wide range of jewellery designed for all the occasions.",
+        "Explore our stunning range of handcrafted jewellery, each piece a unique work of art.",
       buttonLink: "/shop",
       buttonText: "Shop Now",
     },
     {
-      imgSrc: Jewellery2,
-      text: "Long hear shape diamond earrings",
+      imgSrc: Banner_img2,
+      text: "Elevate Your Style with Our Luxury Accessories",
       Subtext:
-        "Discover our wide range of jewellery designed for all the occasions.",
+        "Discover our exclusive collection of high-end jewellery and accessories that will make you stand out.",
       buttonLink: "/shop",
       buttonText: "Shop Now",
     },
     {
-      imgSrc: Jewellery3,
-      text: "Beautiful diamond earrings design",
+      imgSrc: Banner_img3,
+      text: "Timeless Elegance, Crafted to Perfection",
       Subtext:
-        "Discover our wide range of jewellery designed for all the occasions.",
+        "Explore our collection of meticulously designed jewellery that combines classic styles with modern flair.",
       buttonLink: "/shop",
       buttonText: "Shop Now",
     },

@@ -16,7 +16,6 @@ const Coupons = () => {
   async function getAllCoupons(){
     try{
         const response = await axiosClient.post('/api/hyart/list-coupons');
-        console.log(response.result);
         setGetCoupon(response.result);
     }catch(error){
         console.log(error);

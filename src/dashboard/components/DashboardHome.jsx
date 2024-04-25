@@ -16,7 +16,6 @@ const DashboardHome = () => {
   async function getCounts() {
     try {
       const response = await axiosClient.post('/api/admin/get-count');
-      console.log(response.result);
       setCounts(response.result);
     } catch (error) {
       console.log(error);

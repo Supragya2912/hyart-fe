@@ -13,7 +13,6 @@ const Orders = () => {
     async function getOrders() {
         try {
             const response = await axiosClient.post('/api/admin/get-orders');
-            console.log(response.result);
             setOrders(response.result);
         } catch (error) {
             console.log(error);
@@ -37,7 +36,6 @@ const Orders = () => {
     
             const response = await axiosClient.post('/api/admin/update-order-status', payload);
             if (response.status === 'ok' && response.statusCode === 200) {
-                console.log("Order status updated successfully");
                 setStatus('');
                 getOrders();
             } else {
@@ -54,9 +52,7 @@ const Orders = () => {
                 order_id: orderId,
                 status: status
             });
-            console.log(response);
             if (response.status === 'ok' && response.statusCode === 200) {
-                console.log("Order status updated successfully");
                 setStatus('');
                 getOrders();
             } else {

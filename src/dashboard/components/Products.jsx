@@ -30,7 +30,6 @@ const Products = () => {
     async function getAllProduct() {
         try {
             const response = await axiosClient.post('/api/hyart/all-products');
-            console.log(response.result.allProducts);
             setGetProduct(response.result.allProducts);
         } catch (error) {
             console.log(error);
@@ -40,7 +39,6 @@ const Products = () => {
     async function getAllCategories() {
         try {
             const response = await axiosClient.post('/api/hyart/all-category');
-            console.log(response.result);
             setGetCategory(response.result);
         } catch (error) {
             console.log(error);
@@ -48,7 +46,6 @@ const Products = () => {
     }
 
     const handleDeleteProduct = async (product_id) => {
-        console.log('Product deleted', product_id);
         try {
             const deleteProduct = await axiosClient.post('/api/admin/delete-product', { product_id });
             if (deleteProduct.status === "ok") {
@@ -116,10 +113,15 @@ const Products = () => {
         setIsTrending(false);
     };
 
-    const toggleEditModal = () => {
+    const toggleEditModal = (product) => {
+        setName(product.name);
+        setPrice(product.price);
+        setQuantity(product.quantity);
+        setDescription(product.description);
+        setIsTrending(product.trending);
+
         setShowEditModal(!showEditModal);
         setImage('');
-        setIsTrending(false);
     };
 
     const handleTrendingToggle = () => {
@@ -228,7 +230,7 @@ const Products = () => {
                                                         className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                                         onClick={() => {
                                                             setProductId(product?._id);
-                                                            toggleEditModal();
+                                                            toggleEditModal(product);
                                                         }}
                                                     >
                                                         <svg
@@ -496,6 +498,7 @@ const Products = () => {
                                             type="text"
                                             name="name"
                                             id="name"
+                                            value={name}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Product name"
                                             onChange={(e) => setName(e.target.value)}
@@ -512,6 +515,7 @@ const Products = () => {
                                             type="number"
                                             name="price"
                                             id="price"
+                                            value={price}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Rs 0.00"
                                             onChange={(e) => setPrice(e.target.value)}
@@ -519,7 +523,7 @@ const Products = () => {
                                     </div>
                                     <div>
                                         <label
-                                            htmlFor="price"
+                                            htmlFor="quantity"
                                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                         >
                                             Qantity
@@ -528,6 +532,7 @@ const Products = () => {
                                             type="number"
                                             name="quantity"
                                             id="quantity"
+                                            value={quantity}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="0"
                                             onChange={(e) => setQuantity(e.target.value)}
@@ -543,6 +548,7 @@ const Products = () => {
                                         <textarea
                                             id="description"
                                             rows={2}
+                                            value={description}
                                             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Write product description here"
                                             defaultValue={""}
@@ -578,6 +584,7 @@ const Products = () => {
                                                 role="switch"
                                                 id="trendingSwitch"
                                                 checked={isTrending}
+                                                value={isTrending}
                                                 onChange={handleTrendingToggle}
                                             />
                                             <label
