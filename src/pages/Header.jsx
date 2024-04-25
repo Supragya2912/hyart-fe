@@ -40,7 +40,7 @@ const Header = () => {
   const products = useSelector((state) => state.cartReducer.products);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [showMenu, setShowMenu] = useState(window.innerWidth >= 667);
+  const [showMenu, setShowMenu] = useState(false);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
@@ -90,14 +90,18 @@ const Header = () => {
       }
   }
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   const closeDropdown = () => {
     setIsOpen(false);
   };
 
   return (
-    <div className="w-full h-20 bg-white sticky top-0 z-50 border-b-[1px] border-b-gray-200 overflow-x-scroll">
+    <div className="w-full h-20 bg-white sticky top-0 z-50 border-b-[1px] border-b-gray-200">
       <nav className="h-full px-4 max-w-container mx-auto relative">
-        <div className="flex items-center justify-between h-full">
+        <div className="flex items-center justify-between h-full overflow-x-clip">
           <Link to="/">
             <div>
               <img className="w-32 object-cover hidden lg:block" src={Logo} alt="logo"/>
@@ -146,7 +150,7 @@ const Header = () => {
                           className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-100"
                           id="user-menu-button"
                           aria-expanded={isOpen}
-                          onClick={() => setIsOpen(!isOpen)}
+                          onClick={toggleDropdown}
                       >
                         <div className="w-[40px] h-[40px] rounded-full">
                           <img
