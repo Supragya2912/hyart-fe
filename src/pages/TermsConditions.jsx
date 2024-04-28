@@ -42,7 +42,7 @@ const TermsConditions = () => {
             </p>
             <br/>
             <p>
-                To cancel your order you must notify us by email at  <span className='text-primary'>hyart267@gmail.com</span> 
+                To cancel your order you must notify us by email at <a href="mailto:hyart267@gmail.com" className="text-primary">hyart267@gmail.com</a>
             </p>
             <br/>
             <p>

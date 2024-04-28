@@ -22,8 +22,8 @@ function ForgotPassword() {
   }
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section>
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto mt-20 lg:mt-24 lg:py-0">
         <Link to="/">
             <div>
               <img className="object-cover w-48 mb-4" src={Logo} alt="logo" />

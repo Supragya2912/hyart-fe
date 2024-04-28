@@ -23,14 +23,9 @@ const navBarList = [
   },
   {
     _id: 3,
-    title: "About",
-    link: "/about",
-  },
-  {
-    _id: 4,
     title: "Contact",
     link: "/contact",
-  },
+  }
 ];
 
 const Header = () => {

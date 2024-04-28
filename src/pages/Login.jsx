@@ -25,8 +25,8 @@ const Login = () => {
   }
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section>
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto mt-20 lg:mt-24 lg:py-0">
         <Link to="/">
             <div>
               <img className="object-cover w-48 mb-4" src={Logo} alt='logo' />
@@ -34,7 +34,7 @@ const Login = () => {
         </Link>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <TEInput
                   type="email"
                   label="Email address"
@@ -60,12 +60,12 @@ const Login = () => {
               >
                 Login
               </button>
-              <div className="flex gap-16 text-sm font-light text-gray-500 dark:text-gray-400">
-                <div className='flex sm:flex-col lg:flex-row gap-1'>
+              <div className="flex flex-col gap-2 text-sm font-light text-gray-500 dark:text-gray-400">
+                <div className='flex gap-1'>
                   <p>Don’t have an account yet? </p>
                   <Link to="/otp"><p className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</p></Link> 
                 </div>
-                <div className="flex items-center justify-between">
+                <div>
                   <Link to="/forgot-password"><p className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</p></Link>
                 </div>
               </div>

@@ -28,7 +28,6 @@ const Cart = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cartReducer.products);
   const [totalAmt, setTotalAmt] = useState("");
-  const [shippingCharge, setShippingCharge] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
@@ -84,15 +83,6 @@ const Cart = () => {
     });
     setTotalAmt(price);
   }, [products]);
-
-  useEffect(() => {
-    if (totalAmt <= 200)
-      setShippingCharge(30);
-    else if (totalAmt <= 400)
-      setShippingCharge(25);
-    else if (totalAmt > 401)
-      setShippingCharge(20);
-  }, [totalAmt]);
 
   const initPayment = (data) => {
       const options = {
@@ -327,13 +317,13 @@ const Cart = () => {
                   <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
                     Shipping Charge
                     <span className="font-titleFont">
-                      Rs {shippingCharge}
+                      FREE
                     </span>
                   </p>
                   <p className="flex items-center justify-between border-[1px] border-gray-400 py-1.5 text-lg px-4 font-medium">
                     Total
                     <span className="text-lg font-titleFont">
-                      Rs {totalAmt + shippingCharge}
+                      Rs {totalAmt}
                     </span>
                   </p>
                 </div>

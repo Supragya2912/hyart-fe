@@ -46,7 +46,7 @@ const PrivacyPolicy = () => {
                 <p>You may choose to restrict the collection or use of your personal information in the following ways:</p>
                 <ul>
                     <li>Whenever you are asked to fill in a form on the website, look for the box that you can click to indicate that you do not want the information to be used by anybody for direct marketing purposes</li>
-                    <li>If you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by writing to or emailing us at <span className="text-primary">hyart267@gmail.com</span></li>
+                    <li>If you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by writing to or emailing us at <a href="mailto:hyart267@gmail.com" className="text-primary">hyart267@gmail.com</a></li>
                 </ul>
                 <br/>
                 <p>We will not sell, distribute or lease your personal information to third parties unless we have your permission or are required by law to do so. We may use your personal information to send you promotional information about third parties which we think you may find interesting if you tell us that you wish this to happen.</p>

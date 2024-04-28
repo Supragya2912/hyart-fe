@@ -37,6 +37,8 @@ import Update from "./pages/Update";
 import Settings from "./pages/Settings";
 import MyOrders from "./pages/MyOrders";
 import Wishlist from "./pages/Wishlist";
+import Footer2 from "./pages/Footer2";
+import Refund from "./pages/Refund";
 
 const Layout = () => {
   return (
@@ -61,6 +63,24 @@ const Layout = () => {
     </div>
   );
 };
+
+const Layout2 = () => {
+  return (
+    <div>
+      <Outlet />
+      <Footer2 />
+    </div>
+  );
+}
+
+const Layout3 = () => {
+  return (
+    <div>
+      <Outlet />
+      <Footer2 />
+    </div>
+  );
+}
 
 export const TOAST_SUCCESS = "toast_success";
 export const TOAST_FAILURE = "toast_failure";
@@ -99,14 +119,10 @@ function App() {
           <Route path="/" element={<Layout/>}>
             <Route index element={<Home />}></Route>
             <Route path="/shop" element={<Shop />}></Route>
-            <Route path="/about" element={<About />}></Route>
-            <Route path="/contact" element={<Contact />}></Route>
             <Route path="/product/:id" element={<SingleProduct />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
             <Route path="/update" element={<Update />}></Route>
             <Route path="/payments/:status" element={<Payment />}></Route>
-            <Route path="/terms-conditions" element={<TermsConditions />}></Route>
-            <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
             <Route path="/settings" element={<Settings />}></Route>
             <Route path="/myorders" element={<MyOrders />}></Route>
             <Route path="/wishlist" element={<Wishlist />}></Route>
@@ -123,12 +139,21 @@ function App() {
           )}
       </Route>
       <Route element={<RequireLogin/>}>
+        <Route element={<Layout2/>}>
           <Route path="/otp" element={<Otp/>}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/forgot-password" element={<ForgotPassword />} ></Route>
           <Route path="/reset-password/:id" element={<UpdatePassword />} ></Route>
           <Route path="*" element={<Error />} />
+        </Route>
+      </Route>
+      <Route element={<Layout3 />}>
+        <Route path="/terms-conditions" element={<TermsConditions />}></Route>
+        <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
+        <Route path="/contact" element={<Contact />}></Route>
+        <Route path="/about" element={<About />}></Route>
+        <Route path="/refund-policy" element={<Refund />}></Route>
       </Route>
     </Routes>
   </div>
