@@ -57,7 +57,7 @@ const Search = () => {
                           <img src={product?.image?.url} alt={product?.name} className="w-10 h-10 object-cover rounded-md"/>
                           <div className="flex flex-col">
                             <p className="text-base text-primeColor font-semibold">{product?.name}</p>
-                            <p className="text-sm text-gray-400">{product?.description}</p>
+                            <p className="text-sm text-gray-400 w-[95%]">{product?.description}</p>
                           </div>
                         </div>
                         <p className="text-base text-primeColor font-semibold">Rs {product.price}</p>

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import Banner_img1 from "../../assets/jewellery1.png";
-import Banner_img2 from "../../assets/jewellery1.png";
-import Banner_img3 from "../../assets/jewellery1.png";
+import Banner_img2 from "../../assets/jewellery2.png";
+import Banner_img3 from "../../assets/jewellery3.png";
 
 const CustomSlide = ({ Subtext, imgSrc, text, buttonText }) => (
   <div
     style={{
       position: "relative",
-      backgroundColor: "#F6f6f6", 
+      backgroundColor: "#CAEEF4", 
       display: "flex",
       justifyContent: "center",
       alignItems: "center", 
@@ -54,7 +54,7 @@ const CustomSlide = ({ Subtext, imgSrc, text, buttonText }) => (
     <div style={{ marginLeft: "30px" }}>
       <img
         src={imgSrc}
-        className="h-auto max-w-sm"
+        className="h-auto max-w-sm w-72"
         alt="" 
       />
     </div>

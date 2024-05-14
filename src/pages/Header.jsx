@@ -99,7 +99,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-full overflow-x-clip">
           <Link to="/">
             <div>
-              <img className="w-32 object-cover hidden lg:block" src={Logo} alt="logo"/>
+              <img className="w-16 object-cover hidden lg:block" src={Logo} alt="logo"/>
             </div>
           </Link>
           <div className="lg:hidden">

@@ -46,14 +46,14 @@ const Wishlist = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {wishlist.map((item) => (
           <div key={item?._id} className="bg-white shadow-md rounded-lg p-4 transform transition duration-500 ease-in-out hover:scale-105">
-            <img
-              alt="Product"
-              className="aspect-square object-cover w-full rounded-lg overflow-hidden cursor-pointer"
-              src={item?.image?.url}
-              width={150}
-              height={150}
-              onClick={() => handleProductDetails(item?._id)}
-            />
+            <div className='w-[270px] h-[270px] mx-auto'>
+              <img
+                alt="Product"
+                className="w-full h-full cursor-pointer"
+                src={item?.image?.url}
+                onClick={() => handleProductDetails(item?._id)}
+              />
+            </div>
             <h2 className="text-lg font-bold mt-2">{item?.name}</h2>
             <p className="text-gray-500">Rs {item?.price}</p>
             <div className="flex justify-between items-center gap-3 mt-4">

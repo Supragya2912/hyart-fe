@@ -60,6 +60,20 @@ function Contact() {
               Send message
           </button>
         </form>
+        <div>
+          <div className="mt-12 space-y-4">
+            <h2 className="text-2xl font-semibold">Operating Address</h2>
+            <p className="text-lg">
+              123 Business Ave, Suite 456
+              <br />
+              Innovation City, Creativity 78910
+            </p>
+            <h2 className="text-2xl font-semibold">Contact Number</h2>
+            <p className="text-lg">(+91) 7021443479</p>
+            <h2 className="text-2xl font-semibold">Email ID</h2>
+            <p className="text-lg">hyart267@gmail.com</p>
+          </div>
+        </div>
       </div>
     </section>
   );

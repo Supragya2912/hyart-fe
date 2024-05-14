@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Img from "../../assets/section2.png";
 
 const Section2 = () => {
   return (
@@ -21,13 +22,12 @@ const Section2 = () => {
             Shop Now
           </Link>
         </div>
-        <img
-          alt="Story"
-          className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
-          height="200"
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-2.png"
-          width="50"
-        />
+        <div className='flex justify-center items-center'>
+          <img
+            src={Img}
+            className="h-72 max-w-full"
+            alt="..." />
+        </div>
       </div>
     </section>
   );

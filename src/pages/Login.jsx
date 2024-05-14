@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 import { Link, useNavigate} from 'react-router-dom';
-import Logo from "../assets/movix-logo.svg"
+import Logo from "../assets/logo.png"
 import { axiosClient } from '../utils/axiosClient';
 import { KEY_ACCESS_TOKEN, setItem } from '../utils/localStorageManager';
 import { TEInput } from "tw-elements-react";
@@ -29,7 +29,7 @@ const Login = () => {
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto mt-20 lg:mt-24 lg:py-0">
         <Link to="/">
             <div>
-              <img className="object-cover w-48 mb-4" src={Logo} alt='logo' />
+              <img className="object-cover w-32 mb-4" src={Logo} alt='logo' />
             </div>
         </Link>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

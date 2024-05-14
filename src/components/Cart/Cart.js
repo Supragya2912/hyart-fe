@@ -37,14 +37,20 @@ const Cart = () => {
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
   const handleCoupon = async () => {
-    if(couponCode === "") {
+    if (couponCode === "") {
       toast.error("Please enter a valid coupon code");
       return;
-    } 
-    else{
-      setCouponApplied(true);
-      toast.success("Coupon Applied");
-    }  
+    }
+  
+    const validCoupon = getCoupon.find(coupon => coupon.code === couponCode);
+  
+    if (!validCoupon) {
+      toast.error("Invalid coupon code");
+      return;
+    }
+  
+    setCouponApplied(true);
+    toast.success("Coupon Applied");
   }
 
   const handleCouponCopy = (couponCode) => {

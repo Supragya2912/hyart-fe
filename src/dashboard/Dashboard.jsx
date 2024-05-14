@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assets/movix-logo.svg"
+import Logo from "../assets/logo.png"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Products from "./components/Products";
 import Customers from "./components/Customers";
@@ -219,7 +219,7 @@ const Dashboard = () => {
         <div className="bg-white sm:relative sm:flex sm:flex-col gap-2 sm:gap-16 rounded-br-xl h-screen min-h-[600px] py-6 absolute top-0 sm:left-0 left-0 overflow-y-auto px-5 w-48 overflow-hidden">
           <div className="flex gap-2 items-center relative z-30">
             <Link to="/">
-              <img src={Logo} alt="logo" />
+              <img className="w-32 object-cover" src={Logo} alt="logo" />
             </Link>
           </div>
 
