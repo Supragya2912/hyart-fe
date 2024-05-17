@@ -33,6 +33,7 @@ const Cart = () => {
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [getCoupon, setGetCoupon] = useState([]);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [discount, setDiscount] = useState(0);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
@@ -43,6 +44,8 @@ const Cart = () => {
     }
   
     const validCoupon = getCoupon.find(coupon => coupon.code === couponCode);
+
+    setDiscount(validCoupon?.discountAmount || 0);
   
     if (!validCoupon) {
       toast.error("Invalid coupon code");
@@ -314,12 +317,13 @@ const Cart = () => {
               <div className="w-96 flex flex-col gap-4">
                 <h1 className="text-2xl text-right font-semibold">Total Amount</h1>
                 <div>
-                  <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
-                    Subtotal
-                    <span className="font-titleFont">
-                      Rs {totalAmt}
-                    </span>
-                  </p>
+                {discount > 0 && (
+                <div className="flex flex-col items-center">
+                  <span className="text-lg font-semibold text-red-500">
+                    Discount Applied: {discount}%
+                  </span>
+                </div>
+                )}
                   <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
                     Shipping Charge
                     <span className="font-titleFont">
@@ -327,9 +331,9 @@ const Cart = () => {
                     </span>
                   </p>
                   <p className="flex items-center justify-between border-[1px] border-gray-400 py-1.5 text-lg px-4 font-medium">
-                    Total
+                    Total Amount
                     <span className="text-lg font-titleFont">
-                      Rs {totalAmt}
+                    ₹ {(totalAmt * (1 - discount / 100)).toFixed(2)}
                     </span>
                   </p>
                 </div>
