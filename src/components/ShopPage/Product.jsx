@@ -121,7 +121,6 @@ const Product = (props) => {
         </div>
       </div>
 
-      {showLoginPrompt && (
       <TEModal show={showLoginPrompt} setShow={setShowLoginPrompt}>
       <TEModalDialog>
         <TEModalContent>
@@ -176,8 +175,7 @@ const Product = (props) => {
           </TEModalFooter>
         </TEModalContent>
       </TEModalDialog>
-    </TEModal>
-      )}
+      </TEModal>
     </div>
   );
 };

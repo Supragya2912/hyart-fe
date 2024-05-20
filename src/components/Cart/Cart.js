@@ -491,7 +491,6 @@ const Cart = () => {
         </TEModalDialog>
       </TEModal>
 
-      {showLoginPrompt && (
       <TEModal show={showLoginPrompt} setShow={setShowLoginPrompt}>
       <TEModalDialog>
         <TEModalContent>
@@ -546,8 +545,7 @@ const Cart = () => {
           </TEModalFooter>
         </TEModalContent>
       </TEModalDialog>
-    </TEModal>
-      )}
+      </TEModal>
     </div>
   );
 };
