@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaInstagram } from "react-icons/fa";
-import creditCardImg from "../assets/creditcardicons.png";
+import creditCardImg from "../assets/upi.png";
 
 const Footer = () => {
   return (
@@ -30,6 +30,11 @@ const Footer = () => {
                             Privacy Policy
                         </Link>
                     </div>
+                    <div className="pb-6">
+                        <Link to="/refund-policy" className="cursor-pointer hover:underline text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline]">
+                            Refund Policy
+                        </Link>
+                    </div>
                 </nav>
                 <div className="flex justify-center mt-8">
                     <a
@@ -44,7 +49,7 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-col mt-[28px] justify-center items-center">
-                    <div className="w-[200px] mb-4">
+                    <div className="w-[300px] mb-4">
                         <img src={creditCardImg} className='w-full' alt="credit card img" />
                     </div>
                     <p className='text-[#555660]'>Copyright {new Date().getFullYear()} © HYART JEWELLERY</p>

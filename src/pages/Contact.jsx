@@ -64,7 +64,7 @@ function Contact() {
           <div className="mt-12 space-y-4">
             <h2 className="text-2xl font-semibold">Operating Address</h2>
             <p className="text-lg">
-              1/102 shish mahal venkarteshwar nagar cabin road bhayander east thane 401105
+              1/102 Shish Mahal, Venkateshwar Nagar, Cabin Road, Bhayandar East, Thane-401105
             </p>
             <h2 className="text-2xl font-semibold">Contact Number</h2>
             <p className="text-lg">(+91) 7021443479</p>

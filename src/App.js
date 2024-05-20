@@ -5,8 +5,6 @@ import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import LoadingBar from 'react-top-loading-bar';
 import toast, { Toaster } from 'react-hot-toast';
-import RequireUser from "./utils/RequireUser"
-import RequireLogin from "./utils/RequireLogin";
 
 import Header from "./pages/Header";
 import Search from "./pages/Search";
@@ -76,6 +74,7 @@ const Layout2 = () => {
 const Layout3 = () => {
   return (
     <div>
+      <Header />
       <Outlet />
       <Footer2 />
     </div>
@@ -115,7 +114,7 @@ function App() {
     <LoadingBar color='#5f9fff' ref={loadingRef} />
     <div><Toaster/></div>
     <Routes>
-      <Route element={<RequireUser/>}>
+      <Route>
           <Route path="/" element={<Layout/>}>
             <Route index element={<Home />}></Route>
             <Route path="/shop" element={<Shop />}></Route>
@@ -138,7 +137,7 @@ function App() {
               </Route>
           )}
       </Route>
-      <Route element={<RequireLogin/>}>
+      <Route>
         <Route element={<Layout2/>}>
           <Route path="/otp" element={<Otp/>}></Route>
           <Route path="/signup" element={<Signup />}></Route>

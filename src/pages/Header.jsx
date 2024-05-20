@@ -36,6 +36,7 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const token = localStorage.getItem(KEY_ACCESS_TOKEN);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
@@ -56,15 +57,19 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getMyProfile())
-      .then(() => {
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
-  }, [dispatch]);
+    if (token) {
+      dispatch(getMyProfile())
+        .then(() => {
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, [dispatch, token]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -79,7 +84,7 @@ const Header = () => {
     try {
         await axiosClient.post('/api/auth/logout');
         removeItem(KEY_ACCESS_TOKEN);
-        navigate('/login')
+        navigate('/')
       }catch (e){
         console.log(e);
       }
@@ -129,62 +134,64 @@ const Header = () => {
             </motion.ul>
           )}
           <div className="flex mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
-              {!loading ? (
+            {!loading && (
+              token ? (
                 myProfile ? (
                   myProfile?.role === "admin" ? (
                     <button
                       type="button"
                       className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                      onClick={() => navigate('/admin/dashboard')}>
+                      onClick={() => navigate('/admin/dashboard')}
+                    >
                       Dashboard
                     </button>
                   ) : (
                     <div className="pr-12" ref={dropdownRef}>
                       <button
-                          type="button"
-                          className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-100"
-                          id="user-menu-button"
-                          aria-expanded={isOpen}
-                          onClick={toggleDropdown}
+                        type="button"
+                        className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-100"
+                        id="user-menu-button"
+                        aria-expanded={isOpen}
+                        onClick={toggleDropdown}
                       >
                         <div className="w-[40px] h-[40px] rounded-full">
                           <img
-                              className="w-full h-full cursor-pointer rounded-full object-cover"
-                              src={myProfile?.userAvatar?.url ? myProfile?.userAvatar?.url : UserPic}
-                              alt="user"
+                            className="w-full h-full cursor-pointer rounded-full object-cover"
+                            src={myProfile?.userAvatar?.url ? myProfile?.userAvatar?.url : UserPic}
+                            alt="user"
                           />
                         </div>
                       </button>
                       <div className={`${isOpen ? 'block' : 'hidden'}`}>
                         <div className="absolute z-50 my-4 w-52 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
-                            <div className="py-3 px-4">
-                                <span className="block text-sm font-semibold text-gray-900 dark:text-white">{myProfile?.name}</span>
-                                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{myProfile?.email}</span>
-                            </div>
-                            <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                                <li>
-                                    <Link to="/myorders" onClick={closeDropdown} className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My Orders</Link>
-                                </li>
-                                <li>
-                                    <Link to="/settings" onClick={closeDropdown} className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</Link>
-                                </li>
-                            </ul>
-                            <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                                <li>
-                                    <Link to="/wishlist" onClick={closeDropdown} className="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        <svg className="mr-2 w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/></svg>
-                                        My Wishlist
-                                    </Link>
-                                </li>
-                            </ul>
-                            <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                                <li 
-                                  className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={handleLogoutClicked}
-                                >
-                                  Sign Out
-                                </li>
-                            </ul>
+                          <div className="py-3 px-4">
+                            <span className="block text-sm font-semibold text-gray-900 dark:text-white">{myProfile?.name}</span>
+                            <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{myProfile?.email}</span>
+                          </div>
+                          <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                            <li>
+                              <Link to="/myorders" onClick={closeDropdown} className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My Orders</Link>
+                            </li>
+                            <li>
+                              <Link to="/settings" onClick={closeDropdown} className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</Link>
+                            </li>
+                          </ul>
+                          <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                            <li>
+                              <Link to="/wishlist" onClick={closeDropdown} className="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <svg className="mr-2 w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/></svg>
+                                My Wishlist
+                              </Link>
+                            </li>
+                          </ul>
+                          <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                            <li
+                              className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                              onClick={handleLogoutClicked}
+                            >
+                              Sign Out
+                            </li>
+                          </ul>
                         </div>
                       </div>
                     </div>
@@ -192,27 +199,34 @@ const Header = () => {
                 ) : (
                   <button
                     type="button"
-                    className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                    className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     onClick={() => navigate('/login')}
                   >
                     Login
                   </button>
                 )
               ) : (
-                null
-              )}
-              <Link to="/cart">
-                <div className="bg-white w-16 h-[70px] rounded-md flex flex-col gap-1 text-[#33475b] justify-center items-center overflow-x-hidden group cursor-pointer relative">
-                  <div className="flex justify-center items-center">
+                <button
+                  type="button"
+                  className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                  onClick={() => navigate('/login')}
+                >
+                  Login
+                </button>
+              )
+            )}
+            <Link to="/cart">
+              <div className="bg-white w-16 h-[70px] rounded-md flex flex-col gap-1 text-[#33475b] justify-center items-center overflow-x-hidden group cursor-pointer relative">
+                <div className="flex justify-center items-center">
                   <RiShoppingCart2Line className="text-2xl" />
-                  </div>
-                  {products.length > 0 && (
-                    <p className="absolute top-4 right-3 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                      {products.length}
-                    </p>
-                  )}
                 </div>
-              </Link>
+                {products.length > 0 && (
+                  <p className="absolute top-4 right-3 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                    {products.length}
+                  </p>
+                )}
+              </div>
+            </Link>
           </div>
         </div>
       </nav>

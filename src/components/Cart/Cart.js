@@ -21,6 +21,7 @@ import {
 } from "tw-elements-react";
 import { LiaPlusCircleSolid } from "react-icons/lia";
 import { toast } from "react-toastify";
+import { KEY_ACCESS_TOKEN } from "../../utils/localStorageManager";
 
 const Cart = () => {
   const [showModal, setShowModal] = useState(false);
@@ -34,6 +35,8 @@ const Cart = () => {
   const [getCoupon, setGetCoupon] = useState([]);
   const [copySuccess, setCopySuccess] = useState(false);
   const [discount, setDiscount] = useState(0);
+  const token = localStorage.getItem(KEY_ACCESS_TOKEN);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
 
@@ -55,6 +58,26 @@ const Cart = () => {
     setCouponApplied(true);
     toast.success("Coupon Applied");
   }
+
+  const handleAddAddress = () => {
+    if(!token){
+      setShowLoginPrompt(true);
+      return;
+    }
+    navigate('/update');
+  };
+
+  const handleProceedToCheckout = () => {
+    if (!token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    if(paymentMethod === 'razorpay')
+      handlePayment();
+    else
+      setShowModal(true);
+  };
 
   const handleCouponCopy = (couponCode) => {
     navigator.clipboard.writeText(couponCode)
@@ -297,18 +320,18 @@ const Cart = () => {
                       </button>
                     </div>
                   ) : (
-                  <Link to="/update" className="flex items-center">
+                  <p className="flex items-center">
                     <button
                       type="button"
                       className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                      onClick={() => navigate('/update')}
+                      onClick={handleAddAddress}
                     >
                       <span className="flex gap-1 justify-center items-center">
                         <span>Add Address </span> 
                         <span><LiaPlusCircleSolid className="text-[15px]"/></span>
                       </span>
                     </button>
-                  </Link>
+                  </p>
                   )
                 }
               </div>
@@ -377,7 +400,7 @@ const Cart = () => {
                   <button
                       type="button"
                       className="inline-block rounded-lg bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                      onClick={paymentMethod === 'razorpay' ? handlePayment : () => setShowModal(true)}
+                      onClick={handleProceedToCheckout}
                     >
                       Proceed to Checkout
                   </button>
@@ -467,6 +490,64 @@ const Cart = () => {
           </TEModalContent>
         </TEModalDialog>
       </TEModal>
+
+      {showLoginPrompt && (
+      <TEModal show={showLoginPrompt} setShow={setShowLoginPrompt}>
+      <TEModalDialog>
+        <TEModalContent>
+          <TEModalHeader>
+            <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
+              Login Required
+            </h5>
+            <button
+              type="button"
+              className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+              onClick={() => setShowLoginPrompt(false)}
+              aria-label="Close"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </TEModalHeader>
+          <TEModalBody>
+            You need to login first before placing the order.
+          </TEModalBody>
+          <TEModalFooter>
+            <TERipple rippleColor="light">
+              <button
+                type="button"
+                className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+                onClick={() => setShowLoginPrompt(false)}
+              >
+                Cancel
+              </button>
+            </TERipple>
+            <TERipple rippleColor="light">
+              <button
+                type="button"
+                className="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </button>
+            </TERipple>
+          </TEModalFooter>
+        </TEModalContent>
+      </TEModalDialog>
+    </TEModal>
+      )}
     </div>
   );
 };
