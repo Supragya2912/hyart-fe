@@ -35,6 +35,11 @@ const Footer = () => {
                             Refund Policy
                         </Link>
                     </div>
+                    <div className="pb-6">
+                        <Link to="/shipping-policy" className="cursor-pointer hover:underline text-sm font-medium leading-6 text-gray-600 transition-all duration-150 hover:text-[#20B2AA hover:underline]">
+                            Shipping Policy
+                        </Link>
+                    </div>
                 </nav>
                 <div className="flex justify-center mt-8">
                     <a

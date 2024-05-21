@@ -37,6 +37,7 @@ import MyOrders from "./pages/MyOrders";
 import Wishlist from "./pages/Wishlist";
 import Footer2 from "./pages/Footer2";
 import Refund from "./pages/Refund";
+import ShippingPolicy from "./pages/ShippingPolicy";
 
 const Layout = () => {
   return (
@@ -153,6 +154,7 @@ function App() {
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/refund-policy" element={<Refund />}></Route>
+        <Route path="/shipping-policy" element={<ShippingPolicy />}></Route>
       </Route>
     </Routes>
   </div>

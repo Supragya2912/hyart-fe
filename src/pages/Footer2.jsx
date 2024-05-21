@@ -24,6 +24,9 @@ const Footer2 = () => {
           <Link className="block text-sm font-medium text-gray-600 hover:text-gray-900" to="/refund-policy">
             Refund Policy
           </Link>
+          <Link className="block text-sm font-medium text-gray-600 hover:text-gray-900" to="/shipping-policy">
+            Shipping Policy
+          </Link>
         </div>
         <div className="text-sm text-gray-500">© 2024 HYART JEWELLERY. All rights reserved.</div>
       </div>
