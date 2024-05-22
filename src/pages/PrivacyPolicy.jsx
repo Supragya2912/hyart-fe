@@ -5,6 +5,8 @@ const PrivacyPolicy = () => {
         <div className="max-w-container mx-auto px-6">
             <div className="pb-10">
             <h1 className="lg:px-20 mt-10 text-base text-lightText mb-2">
+                <p>We, HyArt Jewellery respect your privacy and are committed to take reasonable precautions to protect your information and comply with our obligations related to privacy.</p>
+                <br/>
                 <p>
                    This Privacy Policy is intended to inform you about the personal data that is collected from you, how your personal data may be used and disclosed, how you can control the use of your personal data, and how your personal data is protected when you use our application. We do not sell trade your personally identifiable information; however, we may share the same with third parties who assist us in conducting our business, operating our website/Application, or servicing you, so long as those parties agree to keep this information confidential. You should check this page from time to time to ensure that you are happy with any changes.
                 </p>
