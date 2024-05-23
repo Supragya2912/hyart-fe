@@ -123,7 +123,11 @@ const Cart = () => {
               razorpay_signature: response.razorpay_signature,
               amount: data.amount,
               receipt: data.receipt,
-              paymentMethod: paymentMethod
+              paymentMethod: paymentMethod,
+              products: products?.map((item) => ({
+                product_id: item._id,
+                quantity: item.quantity,
+              }))
             });
             if (verifyUrl.status === 'ok') navigate('/payments/success');
             else navigate('/payments/failed');
