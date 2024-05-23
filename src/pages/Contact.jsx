@@ -66,8 +66,6 @@ function Contact() {
             <p className="text-lg">
               1/102 Shish Mahal, Venkateshwar Nagar, Cabin Road, Bhayandar East, Thane-401105
             </p>
-            <h2 className="text-2xl font-semibold">Contact Number</h2>
-            <p className="text-lg">(+91) 7021443479</p>
             <h2 className="text-2xl font-semibold">Email ID</h2>
             <p className="text-lg">hyart267@gmail.com</p>
           </div>
