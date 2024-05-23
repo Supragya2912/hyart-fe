@@ -13,7 +13,7 @@ const Section3 = () => {
           </svg>
         </Link>
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">We are jewellery experts</h1>
-        <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"> Established with a vision to redefine elegance, Hyart has been adorning lives with its exquisite jewellery since its inception. With a blend of innovation, craftsmanship, and a deep-rooted passion for beauty.</p>
+        <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-8 xl:px-48 dark:text-gray-400"> Established with a vision to redefine elegance, Hyart has been adorning lives with its exquisite jewellery since its inception. With a blend of innovation, craftsmanship, and a deep-rooted passion for beauty.</p>
         <div className="flex flex-col gap-2 mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
           <Link to="/shop" className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
             Shop now

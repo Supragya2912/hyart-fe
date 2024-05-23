@@ -67,18 +67,6 @@ const Cart = () => {
     navigate('/update');
   };
 
-  // const handleProceedToCheckout = () => {
-  //   if (!token) {
-  //     setShowLoginPrompt(true);
-  //     return;
-  //   }
-
-  //   if(paymentMethod === 'razorpay')
-  //     handlePayment();
-  //   else
-  //     setShowModal(true);
-  // };
-
   const handleCouponCopy = (couponCode) => {
     navigator.clipboard.writeText(couponCode)
       .then(() => {

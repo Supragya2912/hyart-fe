@@ -77,6 +77,8 @@ const Orders = () => {
                 return "text-gray-500";
         }
     };
+
+    const filteredOrders = orders.filter(order => order.status.toLowerCase() !== 'pending');
     
     return (
         <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
@@ -140,7 +142,7 @@ const Orders = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {[...orders].reverse().map((order, index) => (
+                                {[...filteredOrders].reverse().map((order, index) => (
                                     <tr key={index} className="border-b dark:border-gray-600 dark:hover:bg-gray-700">
                                         <td className="px-4 py-3 font-medium text-gray-900 dark:text-white" >
                                             <div className="flex items-center mr-3">
