@@ -371,6 +371,7 @@ const Cart = () => {
                         Pay Online
                       </label>
                     </div>
+                    {/*
                     <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
                       <input
                           type="radio"
@@ -388,6 +389,7 @@ const Cart = () => {
                         Cash on Delivery
                       </label>
                     </div>
+                    */} 
                   </div>
                   <button
                       type="button"
