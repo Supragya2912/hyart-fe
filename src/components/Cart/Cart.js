@@ -106,7 +106,7 @@ const Cart = () => {
 
   const initPayment = (data) => {
       const options = {
-        key: "rzp_test_CU4HeFOSwXLSD1",
+        key: "rzp_live_xosEVB17AOvmls",
         amount: data.amount,
         currency: data.currency,
         name: products.name,
